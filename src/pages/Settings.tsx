@@ -4,6 +4,7 @@ import type { ModelTarget } from "../types";
 import { exportJSON, importJSON } from "../lib/exporters";
 import { Panel, SectionTitle, Field, Toggle } from "../ui";
 import Disclaimer from "../components/Disclaimer";
+import InstallButton from "../components/InstallButton";
 
 const MODELS: ModelTarget[] = ["Claude", "ChatGPT", "Gemini", "Local LLM"];
 
@@ -65,6 +66,15 @@ export default function Settings() {
             </select>
           </Field>
         </div>
+      </Panel>
+
+      <Panel>
+        <h3 className="mb-1 font-semibold">Install app</h3>
+        <p className="mb-3 text-sm text-slate-400">
+          Mnemo Med is a Progressive Web App — install it for an app icon, its own window, and full offline use.
+          It works on desktop and mobile from the same build.
+        </p>
+        <InstallButton variant="settings" />
       </Panel>
 
       <Panel>

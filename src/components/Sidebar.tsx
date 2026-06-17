@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useStore } from "../store";
 import type { PageId } from "../types";
+import InstallButton from "./InstallButton";
 
 const NAV: { id: PageId; label: string; icon: string; group?: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: "🩺" },
@@ -87,6 +88,9 @@ function NavList({ page, go }: { page: PageId; go: (id: PageId) => void }) {
           <span>{n.label}</span>
         </button>
       ))}
+      <div className="pt-3">
+        <InstallButton />
+      </div>
     </div>
   );
 }

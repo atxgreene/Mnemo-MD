@@ -103,8 +103,9 @@ npm run preview  # preview the production build
 ```
 
 The app is a Progressive Web App: after the first production load it caches the
-shell and runs offline. You can "Install" it from the browser for an app-like
-experience on desktop or mobile.
+shell and runs offline. Install it for an app icon, its own window, and full
+offline use on desktop or mobile — use the **Install app** button in the sidebar
+(or in *Settings*), or your browser's Install / "Add to Home Screen" option.
 
 ---
 
