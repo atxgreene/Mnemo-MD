@@ -131,6 +131,25 @@ export interface WeakTopic {
   nextAction: string;
 }
 
+export type ReviewGrade = "again" | "hard" | "good" | "easy";
+
+/** A spaced-repetition flashcard with SM-2 scheduling state. */
+export interface Flashcard {
+  id: string;
+  front: string;
+  back: string;
+  tags: string[];
+  sourceId?: string;
+  deck: string;
+  ease: number; // SM-2 ease factor (>= 1.3)
+  intervalDays: number;
+  reps: number; // current successful streak
+  lapses: number;
+  due: number; // timestamp when next due
+  lastReviewed?: number;
+  createdAt: number;
+}
+
 export interface OutputVaultItem {
   id: string;
   title: string;
@@ -158,6 +177,8 @@ export type PageId =
   | "practice"
   | "image"
   | "verified"
+  | "flashcards"
+  | "quiz"
   | "weakness"
   | "cram"
   | "vault"
@@ -169,6 +190,7 @@ export interface AppState {
   sources: SourceMaterial[];
   weakTopics: WeakTopic[];
   outputs: OutputVaultItem[];
+  flashcards: Flashcard[];
   settings: MnemoSettings;
   modes: ModeToggles;
 }

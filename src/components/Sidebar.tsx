@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useStore } from "../store";
 import type { PageId } from "../types";
+import InstallButton from "./InstallButton";
 
 const NAV: { id: PageId; label: string; icon: string; group?: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: "🩺" },
@@ -11,6 +12,8 @@ const NAV: { id: PageId; label: string; icon: string; group?: string }[] = [
   { id: "practice", label: "Practice Builder", icon: "✍️" },
   { id: "image", label: "Image / Graph", icon: "📈" },
   { id: "verified", label: "Verified Answers", icon: "✅" },
+  { id: "flashcards", label: "Flashcards (SRS)", icon: "🗂️" },
+  { id: "quiz", label: "Quiz Mode", icon: "❓" },
   { id: "weakness", label: "Weakness Tracker", icon: "🎯" },
   { id: "cram", label: "Cram Planner", icon: "🗓️" },
   { id: "vault", label: "Output Vault", icon: "🗄️" },
@@ -85,6 +88,9 @@ function NavList({ page, go }: { page: PageId; go: (id: PageId) => void }) {
           <span>{n.label}</span>
         </button>
       ))}
+      <div className="pt-3">
+        <InstallButton />
+      </div>
     </div>
   );
 }

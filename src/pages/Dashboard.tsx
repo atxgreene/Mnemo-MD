@@ -1,6 +1,7 @@
 import { useStore } from "../store";
 import { calculateDaysUntilExam, formatDate } from "../lib/dates";
 import { recommendedOrder, studyConfidenceScore, band } from "../lib/weakness";
+import { deckStats } from "../lib/srs";
 import { PROMPT_MODE_LABELS } from "../types";
 import { Panel, SectionTitle, Stat } from "../ui";
 import ModeBar from "../components/ModeBar";
@@ -16,9 +17,11 @@ export default function Dashboard() {
   const weakCount = weakTopics.filter((t) => band(t) === "weak").length;
   const ordered = recommendedOrder(weakTopics);
   const topWeak = ordered[0];
+  const cardsDue = deckStats(state.flashcards).due;
 
   const nextAction = (() => {
     if (sources.length === 0) return { label: "Add your first source note", page: "sources" as const };
+    if (cardsDue > 0) return { label: `Review ${cardsDue} flashcard${cardsDue === 1 ? "" : "s"} due now`, page: "flashcards" as const };
     if (weakTopics.length === 0) return { label: "Set up your weakness tracker", page: "weakness" as const };
     if (topWeak) return { label: `Drill your weakest topic: ${topWeak.topic}`, page: "weakness" as const };
     return { label: "Generate a high-yield review sheet", page: "prompt-lab" as const };
@@ -33,9 +36,10 @@ export default function Dashboard() {
         right={<StatusBadges />}
       />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <Stat label="Days to exam" value={days === null ? "—" : days < 0 ? "past" : days} accent />
         <Stat label="Source notes" value={sources.length} />
+        <Stat label="Cards due" value={cardsDue} accent />
         <Stat label="Weak topics" value={weakCount} />
         <Stat label="Confidence" value={`${confidence}%`} accent />
       </div>
