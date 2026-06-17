@@ -11,6 +11,8 @@ const NAV: { id: PageId; label: string; icon: string; group?: string }[] = [
   { id: "practice", label: "Practice Builder", icon: "✍️" },
   { id: "image", label: "Image / Graph", icon: "📈" },
   { id: "verified", label: "Verified Answers", icon: "✅" },
+  { id: "flashcards", label: "Flashcards (SRS)", icon: "🗂️" },
+  { id: "quiz", label: "Quiz Mode", icon: "❓" },
   { id: "weakness", label: "Weakness Tracker", icon: "🎯" },
   { id: "cram", label: "Cram Planner", icon: "🗓️" },
   { id: "vault", label: "Output Vault", icon: "🗄️" },

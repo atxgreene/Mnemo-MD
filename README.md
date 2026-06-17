@@ -42,12 +42,23 @@ study system:
 - **Course Profile** — course, professor, exam, date, topics, difficulty,
   preferred model, study hours, grading & wording notes.
 - **Source Library** — paste notes, slides, professor hints, practice
-  questions, lab material, study guides, or graph/image descriptions. Each
-  source has a type, lecture number, topic tags, importance, and a
+  questions, lab material, study guides, or graph/image descriptions, **or
+  import files**: PDFs (text extracted locally via pdf.js), images of
+  notes/slides (OCR'd in-browser via tesseract.js), and `.txt`/`.md`/`.csv`.
+  Each source has a type, lecture number, topic tags, importance, and a
   *lock-wording* toggle.
-- **Mnemosyne Lite** — a lightweight, local retrieval layer (keyword/tag/topic
-  matching, exact-phrase, recency, and importance weighting) that returns
-  ranked, highlighted evidence snippets with relevance scores.
+- **Mnemosyne Lite (semantic)** — a local retrieval layer that ranks evidence
+  by **TF-IDF cosine similarity** (so conceptually-related notes surface even
+  without exact word matches), layered with keyword/tag/topic/exact-phrase hits
+  plus recency and importance weighting. Returns ranked, highlighted snippets
+  with relevance scores — all offline, no model download.
+- **Flashcards (SRS)** — a local spaced-repetition deck using an Anki-flavored
+  SM-2 scheduler. Add cards manually or import an Anki CSV (paste the Anki
+  Factory output straight in), then review what's due with Again/Hard/Good/Easy
+  grading. Deck stats track new/learning/mature/due.
+- **Quiz Mode** — a timed, scored self-test auto-generated from your deck
+  (multiple choice with distractors drawn from your other cards, or self-graded
+  recall for small decks), with a missed-question review at the end.
 - **Generation modes (global toggles)** — Source-Locked, Preserve Professor
   Language, Premed Reasoning, High-Yield, Finals Cram, Academic Integrity.
 - **Prompt Lab** — Review Sheet, Explain Like I'm Premed, Professor Wording
@@ -101,15 +112,19 @@ experience on desktop or mobile.
 
 1. **Set up your course** in *Course Profile* (or start from the included
    *Cell Biology Final* sample).
-2. **Add material** in *Source Library* — paste notes/slides/professor wording,
-   tag them, and lock wording where the professor's phrasing matters.
+2. **Add material** in *Source Library* — paste text or **import a PDF / image /
+   file** (PDFs are text-extracted; images are OCR'd in-browser). Tag sources
+   and lock wording where the professor's phrasing matters.
 3. **Pick your generation modes** (Source-Locked and Preserve Language are on by
    default).
 4. **Generate** in any workspace. Review the *Mnemosyne Lite* evidence first,
    then copy the prompt into your AI of choice (attach the real image for graph
    analysis).
-5. **Track weakness** and **build a cram plan** as the exam approaches.
-6. **Save outputs** to the Vault and **back up** your data from *Settings*.
+5. **Build a deck**: generate cards in *Anki Factory*, paste the CSV into
+   *Flashcards* to import them, then **review with spaced repetition** and
+   **test yourself in *Quiz Mode***.
+6. **Track weakness** and **build a cram plan** as the exam approaches.
+7. **Save outputs** to the Vault and **back up** your data from *Settings*.
 
 ---
 
@@ -125,14 +140,16 @@ and no network request for your data. Backups are plain JSON files you control.
 
 Core TypeScript types live in [`src/types.ts`](src/types.ts): `SourceMaterial`,
 `EvidenceSnippet`, `RetrievalResult`, `StudyProfile`, `PromptMode`,
-`ModeToggles`, `WeakTopic`, `OutputVaultItem`, and `MnemoSettings`.
+`ModeToggles`, `WeakTopic`, `Flashcard`, `OutputVaultItem`, and `MnemoSettings`.
 
 Reusable utilities:
 
 | Utility | Location |
 | --- | --- |
 | `saveToStorage` / `loadFromStorage` | `src/lib/storage.ts` |
-| `retrieveRelevantSources` (Mnemosyne Lite) | `src/lib/retrieval.ts` |
+| `retrieveRelevantSources` (Mnemosyne Lite, TF-IDF cosine) | `src/lib/retrieval.ts` |
+| `extractTextFromFile` (PDF / OCR / text ingestion) | `src/lib/ingest.ts` |
+| `reviewCard` / `dueCards` / `parseCardsCSV` (SM-2 SRS) | `src/lib/srs.ts` |
 | `generatePrompt` | `src/lib/promptGenerator.ts` |
 | `exportMarkdown` / `exportCSV` / `exportJSON` / `importJSON` | `src/lib/exporters.ts` |
 | `calculateWeaknessPriority` | `src/lib/weakness.ts` |
@@ -146,29 +163,34 @@ is fully useful by generating elite prompts you paste into any model.
 
 ## Limitations
 
-- A local app cannot truly *analyze* an image or parse a PDF on its own — v1
-  generates an excellent vision/analysis prompt instead. Attach the real image
-  to a vision-capable model.
-- Mnemosyne Lite is keyword/heuristic retrieval, not a true vector database
-  (that arrives in v2).
-- Generated prompts are study aids. Always verify against official materials.
+- **PDF text extraction** reads embedded text. Scanned/image-only PDFs have no
+  text layer — export the page as an image and import it to OCR instead.
+- **OCR** downloads its engine + language data on first use, so the first image
+  import needs a network connection (subsequent OCR is cached). PDF and text
+  parsing are fully offline.
+- **Image *analysis*** is still prompt-based (Path A): the app generates the
+  vision prompt and you attach the image to a vision-capable model. A live
+  in-app vision API is the next step (see below).
+- Semantic retrieval is local TF-IDF cosine similarity, not learned embeddings
+  — strong and offline, but a true vector/embedding backend is a later upgrade.
+- Generated prompts and quizzes are study aids. Always verify against official
+  materials.
 
 ---
 
 ## Roadmap
 
-**v1 (this release)**
-- Local-first prompt cockpit
-- Mnemosyne Lite retrieval
-- Review sheet / Anki / practice-question prompts
-- Weak topic tracker
-- Finals planner
+**v1**
+- Local-first prompt cockpit · Mnemosyne Lite retrieval · review/Anki/practice
+  prompts · weak-topic tracker · finals planner
 
-**v2**
-- File upload parsing, PDF extraction, OCR
-- Real vector retrieval
-- AI API integrations + in-app image analysis
-- Downloadable Anki package, quiz mode, spaced-repetition scheduler
+**v2 (this release)**
+- ✅ File upload parsing, in-browser PDF extraction, in-browser OCR
+- ✅ Semantic retrieval (TF-IDF cosine similarity)
+- ✅ Quiz mode + spaced-repetition scheduler (SM-2) with a local flashcard deck
+- ⏳ Optional AI API integrations + in-app image analysis (auth approach under
+  design — API key today; OAuth/PKCE where providers support it)
+- ⏳ Downloadable `.apkg` Anki package (CSV export ships today)
 
 **v3**
 - Full Mnemosyne backend
@@ -181,8 +203,9 @@ is fully useful by generating elite prompts you paste into any model.
 
 ## Tech stack
 
-Vite · React · TypeScript · Tailwind CSS · local storage · PWA. No required
-backend.
+Vite · React · TypeScript · Tailwind CSS · local storage · PWA · pdf.js (PDF
+text) · tesseract.js (OCR). No required backend; heavy parsers are lazy-loaded
+so the initial bundle stays small.
 
 ## License
 

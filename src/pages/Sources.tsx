@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useStore } from "../store";
 import type { Importance, SourceMaterial, SourceType } from "../types";
 import { SOURCE_TYPE_LABELS } from "../types";
 import { uid } from "../lib/storage";
 import { formatRelative } from "../lib/dates";
+import { extractTextFromFile, isIngestable } from "../lib/ingest";
 import { Panel, SectionTitle, Field, EmptyState, parseList } from "../ui";
 
 const TYPES = Object.keys(SOURCE_TYPE_LABELS) as SourceType[];
@@ -26,6 +27,38 @@ export default function Sources() {
   const [editing, setEditing] = useState<string | null>(null);
   const [draft, setDraft] = useState(blank());
   const [filter, setFilter] = useState<SourceType | "all">("all");
+  const [importing, setImporting] = useState<string | null>(null);
+  const importRef = useRef<HTMLInputElement>(null);
+
+  const onImport = async (file?: File) => {
+    if (file) {
+      // allow re-importing the same file later
+      if (importRef.current) importRef.current.value = "";
+    }
+    if (!file) return;
+    if (!isIngestable(file)) {
+      setImporting("⚠️ Unsupported file type. Use PDF, image, or text.");
+      setTimeout(() => setImporting(null), 4000);
+      return;
+    }
+    try {
+      setImporting("Starting…");
+      const res = await extractTextFromFile(file, (stage, pct) =>
+        setImporting(pct != null ? `${stage} ${Math.round(pct * 100)}%` : stage)
+      );
+      setEditing("new");
+      setDraft({
+        ...blank(),
+        title: file.name.replace(/\.[^.]+$/, ""),
+        content: res.text,
+        type: res.suggestedType,
+      });
+      setImporting(null);
+    } catch (e) {
+      setImporting("⚠️ " + (e instanceof Error ? e.message : "Import failed."));
+      setTimeout(() => setImporting(null), 7000);
+    }
+  };
 
   const startNew = () => {
     setEditing("new");
@@ -57,11 +90,38 @@ export default function Sources() {
         title="Source Library"
         subtitle="Paste notes, slides, professor wording, and practice questions. The raw material for everything."
         right={
-          <button className="btn btn-primary btn-sm" onClick={startNew}>
-            + Add Source
-          </button>
+          <div className="flex gap-2">
+            <button className="btn btn-ghost btn-sm" onClick={() => importRef.current?.click()}>
+              ⬆ Import file
+            </button>
+            <button className="btn btn-primary btn-sm" onClick={startNew}>
+              + Add Source
+            </button>
+            <input
+              ref={importRef}
+              type="file"
+              accept=".txt,.md,.markdown,.csv,.tsv,.json,application/pdf,image/*"
+              className="hidden"
+              onChange={(e) => onImport(e.target.files?.[0])}
+            />
+          </div>
         }
       />
+
+      {importing && (
+        <div className="glass-soft flex items-center gap-3 p-3 text-sm">
+          {!importing.startsWith("⚠️") && (
+            <span className="h-4 w-4 flex-none animate-spin rounded-full border-2 border-teal-400/30 border-t-teal-400" />
+          )}
+          <span className={importing.startsWith("⚠️") ? "text-amber-300" : "text-slate-300"}>{importing}</span>
+        </div>
+      )}
+
+      <div className="glass-soft p-3 text-xs text-slate-400">
+        📥 <b className="text-slate-300">Import:</b> drop in a PDF (text extracted locally), an image of notes/slides
+        (OCR'd in-browser), or a .txt/.md/.csv file. Extracted text opens in the editor for review before you save.
+        OCR downloads its engine on first use.
+      </div>
 
       {editing && (
         <Panel>

@@ -8,6 +8,8 @@ import AnkiFactory from "./pages/AnkiFactory";
 import PracticeBuilder from "./pages/PracticeBuilder";
 import ImageMode from "./pages/ImageMode";
 import VerifiedAnswers from "./pages/VerifiedAnswers";
+import Flashcards from "./pages/Flashcards";
+import Quiz from "./pages/Quiz";
 import WeaknessTracker from "./pages/WeaknessTracker";
 import CramPlanner from "./pages/CramPlanner";
 import OutputVault from "./pages/OutputVault";
@@ -29,6 +31,8 @@ export default function App() {
           {page === "practice" && <PracticeBuilder />}
           {page === "image" && <ImageMode />}
           {page === "verified" && <VerifiedAnswers />}
+          {page === "flashcards" && <Flashcards />}
+          {page === "quiz" && <Quiz />}
           {page === "weakness" && <WeaknessTracker />}
           {page === "cram" && <CramPlanner />}
           {page === "vault" && <OutputVault />}

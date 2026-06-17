@@ -1,16 +1,39 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type {
   AppState,
+  Flashcard,
   MnemoSettings,
   ModeToggles,
   OutputVaultItem,
   PageId,
+  ReviewGrade,
   SourceMaterial,
   StudyProfile,
   WeakTopic,
 } from "./types";
 import { loadFromStorage, saveToStorage, clearStorage } from "./lib/storage";
+import { reviewCard } from "./lib/srs";
 import { sampleState } from "./data/sampleData";
+
+/**
+ * Merge persisted state with current defaults so data saved by older versions
+ * (e.g. v1, which had no flashcards) keeps loading after upgrades.
+ */
+function normalize(loaded: AppState | null): AppState {
+  const base = sampleState();
+  if (!loaded) return base;
+  return {
+    ...base,
+    ...loaded,
+    profile: { ...base.profile, ...loaded.profile },
+    settings: { ...base.settings, ...loaded.settings },
+    modes: { ...base.modes, ...loaded.modes },
+    sources: loaded.sources ?? [],
+    weakTopics: loaded.weakTopics ?? [],
+    outputs: loaded.outputs ?? [],
+    flashcards: loaded.flashcards ?? [],
+  };
+}
 
 interface StoreContextValue {
   state: AppState;
@@ -31,6 +54,11 @@ interface StoreContextValue {
   addOutput: (o: OutputVaultItem) => void;
   removeOutput: (id: string) => void;
 
+  addCards: (cards: Flashcard[]) => void;
+  updateCard: (id: string, patch: Partial<Flashcard>) => void;
+  removeCard: (id: string) => void;
+  reviewFlashcard: (id: string, grade: ReviewGrade) => void;
+
   importData: (state: AppState) => void;
   resetData: () => void;
 }
@@ -38,7 +66,7 @@ interface StoreContextValue {
 const StoreContext = createContext<StoreContextValue | null>(null);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AppState>(() => loadFromStorage() ?? sampleState());
+  const [state, setState] = useState<AppState>(() => normalize(loadFromStorage()));
   const [page, setPage] = useState<PageId>("dashboard");
 
   // Persist on every change (debounce-free; payloads are small).
@@ -89,7 +117,20 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       addOutput: (o) => setState((s) => ({ ...s, outputs: [o, ...s.outputs] })),
       removeOutput: (id) => setState((s) => ({ ...s, outputs: s.outputs.filter((x) => x.id !== id) })),
 
-      importData: (next) => setState(next),
+      addCards: (cards) => setState((s) => ({ ...s, flashcards: [...cards, ...s.flashcards] })),
+      updateCard: (id, patch) =>
+        setState((s) => ({
+          ...s,
+          flashcards: s.flashcards.map((c) => (c.id === id ? { ...c, ...patch } : c)),
+        })),
+      removeCard: (id) => setState((s) => ({ ...s, flashcards: s.flashcards.filter((c) => c.id !== id) })),
+      reviewFlashcard: (id, grade) =>
+        setState((s) => ({
+          ...s,
+          flashcards: s.flashcards.map((c) => (c.id === id ? reviewCard(c, grade) : c)),
+        })),
+
+      importData: (next) => setState(normalize(next)),
       resetData: () => {
         clearStorage();
         setState(sampleState());
