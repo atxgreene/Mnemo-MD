@@ -1,0 +1,19 @@
+{
+  "name": "Mnemo Med",
+  "short_name": "Mnemo Med",
+  "description": "Source-locked study intelligence for premed finals.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#06121f",
+  "theme_color": "#06121f",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

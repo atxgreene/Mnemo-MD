@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ink-950 text-slate-100 antialiased;
+    background-image:
+      radial-gradient(1100px 560px at 82% -8%, rgba(108, 140, 255, 0.18), transparent 60%),
+      radial-gradient(900px 500px at -8% 6%, rgba(45, 212, 191, 0.16), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  /* Soft light theme (dark is the recommended default). */
+  html.light body {
+    @apply bg-slate-100 text-slate-900;
+    background-image:
+      radial-gradient(1100px 560px at 82% -8%, rgba(108, 140, 255, 0.18), transparent 60%),
+      radial-gradient(900px 500px at -8% 6%, rgba(45, 212, 191, 0.22), transparent 55%);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white/10;
+  }
+  html.light ::-webkit-scrollbar-thumb {
+    @apply bg-slate-900/15;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl;
+  }
+  html.light .glass {
+    @apply border-slate-900/10 bg-white/70;
+  }
+
+  .glass-soft {
+    @apply rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-md;
+  }
+  html.light .glass-soft {
+    @apply border-slate-900/10 bg-white/50;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-900 shadow-glow hover:brightness-105;
+  }
+  .btn-ghost {
+    @apply border border-white/10 text-slate-200 hover:bg-white/5;
+  }
+  html.light .btn-ghost {
+    @apply border-slate-900/15 text-slate-700 hover:bg-slate-900/5;
+  }
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    @apply w-full rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 transition focus:border-teal-400/50 focus:outline-none focus:ring-2 focus:ring-teal-400/30;
+  }
+  html.light .input,
+  html.light .select,
+  html.light .textarea {
+    @apply border-slate-900/15 bg-white text-slate-900 placeholder-slate-400;
+  }
+  .textarea {
+    @apply min-h-[110px] resize-y leading-relaxed;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-medium text-slate-400;
+  }
+  html.light .label {
+    @apply text-slate-500;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+  }
+
+  .nav-item {
+    @apply flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5;
+  }
+  html.light .nav-item {
+    @apply text-slate-600 hover:bg-slate-900/5;
+  }
+  .nav-item.active {
+    @apply bg-gradient-to-r from-teal-400/15 to-cyan-500/10 text-teal-200 ring-1 ring-teal-400/30;
+  }
+  html.light .nav-item.active {
+    @apply text-teal-700;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-300;
+  }
+  html.light .chip {
+    @apply border-slate-900/10 bg-slate-900/5 text-slate-600;
+  }
+}
