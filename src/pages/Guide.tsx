@@ -30,7 +30,7 @@ export default function Guide() {
         <SectionTitle icon="🔄" title="The Study Loop" subtitle="Repeat this cycle as the exam approaches." />
         <div className="space-y-3">
           <Step n={1} title="Set up your course" go={() => setPage("profile")} goLabel="Course Profile"
-            body="Enter your class, professor, exam date, and topics. This feeds context into everything and powers the cram plan." />
+            body="Enter your class, professor, exam date, and topics — or tap a subject template (Anatomy, Physiology, Pharm, MCAT sections…) to load topics instantly. This feeds context into everything and powers the cram plan." />
           <Step n={2} title="Add your material" go={() => setPage("sources")} goLabel="Source Library"
             body="Paste notes/slides, or import a PDF or a photo of your notes (text is extracted/OCR'd on your device). Tag each source by topic and lock the wording when the professor's exact phrasing matters." />
           <Step n={3} title="Generate study material" go={() => setPage("prompt-lab")} goLabel="Prompt Lab"

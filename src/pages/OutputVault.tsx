@@ -4,6 +4,7 @@ import { PROMPT_MODE_LABELS } from "../types";
 import { uid } from "../lib/storage";
 import { formatDate } from "../lib/dates";
 import { exportMarkdown, exportText } from "../lib/exporters";
+import { printDocument } from "../lib/print";
 import { Panel, SectionTitle, Field, EmptyState, CopyButton } from "../ui";
 
 export default function OutputVault() {
@@ -84,6 +85,7 @@ export default function OutputVault() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <CopyButton text={o.content} className="btn btn-ghost btn-sm" />
+                  <button className="btn btn-ghost btn-sm" onClick={() => printDocument(o.title, o.content)}>🖨 Print</button>
                   <button className="btn btn-ghost btn-sm" onClick={() => exportMarkdown(o.title, o.content)}>.md</button>
                   <button className="btn btn-ghost btn-sm" onClick={() => exportText(o.title, o.content)}>.txt</button>
                   <button className="btn btn-ghost btn-sm !text-rose-300" onClick={() => removeOutput(o.id)}>Delete</button>
