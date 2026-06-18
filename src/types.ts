@@ -204,7 +204,12 @@ export type PageId =
   | "vault"
   | "settings";
 
-/** Full persisted application state. */
+/**
+ * The active course's data, as consumed by every page. This is a flattened
+ * view: the store derives it from the active course in PersistedState, so page
+ * code reads `state.profile`, `state.sources`, … unchanged across the
+ * single- and multi-course versions.
+ */
 export interface AppState {
   profile: StudyProfile;
   sources: SourceMaterial[];
@@ -215,3 +220,29 @@ export interface AppState {
   modes: ModeToggles;
   ai: AISettings;
 }
+
+/** One course's worth of memory (v3 multi-course). */
+export interface Course {
+  id: string;
+  profile: StudyProfile;
+  sources: SourceMaterial[];
+  weakTopics: WeakTopic[];
+  outputs: OutputVaultItem[];
+  flashcards: Flashcard[];
+}
+
+/** What actually persists to local storage: many courses + global settings. */
+export interface PersistedState {
+  courses: Course[];
+  activeCourseId: string;
+  settings: MnemoSettings;
+  modes: ModeToggles;
+  ai: AISettings;
+}
+
+/** Lightweight course descriptor for the switcher UI. */
+export interface CourseSummary {
+  id: string;
+  name: string;
+}
+

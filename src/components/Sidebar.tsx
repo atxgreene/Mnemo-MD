@@ -86,6 +86,7 @@ function Brand() {
 function NavList({ page, go }: { page: PageId; go: (id: PageId) => void }) {
   return (
     <div className="space-y-1">
+      <CourseSwitcher />
       {NAV.map((n) => (
         <button key={n.id} className={`nav-item ${page === n.id ? "active" : ""}`} onClick={() => go(n.id)}>
           <span className="text-base">{n.icon}</span>
@@ -95,6 +96,28 @@ function NavList({ page, go }: { page: PageId; go: (id: PageId) => void }) {
       <div className="pt-3">
         <InstallButton />
       </div>
+    </div>
+  );
+}
+
+function CourseSwitcher() {
+  const { courses, activeCourseId, setActiveCourse, addCourse } = useStore();
+  return (
+    <div className="mb-3 px-1">
+      <label className="label">Course</label>
+      <select
+        className="select"
+        value={activeCourseId}
+        onChange={(e) => {
+          if (e.target.value === "__new") addCourse();
+          else setActiveCourse(e.target.value);
+        }}
+      >
+        {courses.map((c) => (
+          <option key={c.id} value={c.id}>{c.name}</option>
+        ))}
+        <option value="__new">＋ New course…</option>
+      </select>
     </div>
   );
 }

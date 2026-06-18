@@ -2,38 +2,88 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import type {
   AISettings,
   AppState,
+  Course,
+  CourseSummary,
   Flashcard,
   MnemoSettings,
   ModeToggles,
   OutputVaultItem,
   PageId,
+  PersistedState,
   ReviewGrade,
   SourceMaterial,
   StudyProfile,
   WeakTopic,
 } from "./types";
-import { loadFromStorage, saveToStorage, clearStorage } from "./lib/storage";
+import { loadFromStorage, saveToStorage, clearStorage, uid } from "./lib/storage";
 import { reviewCard } from "./lib/srs";
-import { sampleState } from "./data/sampleData";
+import { sampleState, emptyProfile, blankCourse } from "./data/sampleData";
+import { exportJSON } from "./lib/exporters";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+function normalizeCourse(c: any, model: AISettings["provider"] | undefined): Course {
+  const empty = emptyProfile();
+  return {
+    id: typeof c?.id === "string" ? c.id : uid("course_"),
+    profile: { ...empty, ...(c?.profile ?? {}) },
+    sources: Array.isArray(c?.sources) ? c.sources : [],
+    weakTopics: Array.isArray(c?.weakTopics) ? c.weakTopics : [],
+    outputs: Array.isArray(c?.outputs) ? c.outputs : [],
+    flashcards: Array.isArray(c?.flashcards) ? c.flashcards : [],
+  };
+}
 
 /**
- * Merge persisted state with current defaults so data saved by older versions
- * (e.g. v1, which had no flashcards) keeps loading after upgrades.
+ * Accept any persisted shape — new multi-course, old single-course (v1/v2), or
+ * the sample seed — and produce a normalized PersistedState. This is the
+ * migration seam that keeps existing local data loading after the v3 upgrade.
  */
-function normalize(loaded: AppState | null): AppState {
-  const base = sampleState();
-  if (!loaded) return base;
+function normalize(loaded: any): PersistedState {
+  const base = sampleState(); // flat sample (one course's worth + globals)
+
+  const settings: MnemoSettings = { ...base.settings, ...(loaded?.settings ?? {}) };
+  const modes: ModeToggles = { ...base.modes, ...(loaded?.modes ?? {}) };
+  const ai: AISettings = { ...base.ai, ...(loaded?.ai ?? {}) };
+
+  let courses: Course[];
+  let activeCourseId: string;
+
+  if (loaded && Array.isArray(loaded.courses) && loaded.courses.length) {
+    courses = loaded.courses.map((c: any) => normalizeCourse(c, undefined));
+    activeCourseId =
+      typeof loaded.activeCourseId === "string" && courses.some((c) => c.id === loaded.activeCourseId)
+        ? loaded.activeCourseId
+        : courses[0].id;
+  } else if (loaded && (loaded.profile || loaded.sources)) {
+    // Old single-course shape → wrap into one course.
+    courses = [normalizeCourse(loaded, undefined)];
+    activeCourseId = courses[0].id;
+  } else {
+    // Nothing usable → seed from the sample course.
+    courses = [normalizeCourse(base, undefined)];
+    activeCourseId = courses[0].id;
+  }
+
+  return { courses, activeCourseId, settings, modes, ai };
+}
+
+function activeCourse(p: PersistedState): Course {
+  return p.courses.find((c) => c.id === p.activeCourseId) ?? p.courses[0];
+}
+
+/** Flatten the active course + globals into the AppState view pages consume. */
+function viewOf(p: PersistedState): AppState {
+  const c = activeCourse(p);
   return {
-    ...base,
-    ...loaded,
-    profile: { ...base.profile, ...loaded.profile },
-    settings: { ...base.settings, ...loaded.settings },
-    modes: { ...base.modes, ...loaded.modes },
-    sources: loaded.sources ?? [],
-    weakTopics: loaded.weakTopics ?? [],
-    outputs: loaded.outputs ?? [],
-    flashcards: loaded.flashcards ?? [],
-    ai: { ...base.ai, ...(loaded.ai ?? {}) },
+    profile: c.profile,
+    sources: c.sources,
+    weakTopics: c.weakTopics,
+    outputs: c.outputs,
+    flashcards: c.flashcards,
+    settings: p.settings,
+    modes: p.modes,
+    ai: p.ai,
   };
 }
 
@@ -41,6 +91,13 @@ interface StoreContextValue {
   state: AppState;
   page: PageId;
   setPage: (p: PageId) => void;
+
+  // Multi-course (v3)
+  courses: CourseSummary[];
+  activeCourseId: string;
+  setActiveCourse: (id: string) => void;
+  addCourse: () => void;
+  removeCourse: (id: string) => void;
 
   setProfile: (patch: Partial<StudyProfile>) => void;
   setModes: (patch: Partial<ModeToggles>) => void;
@@ -62,86 +119,97 @@ interface StoreContextValue {
   removeCard: (id: string) => void;
   reviewFlashcard: (id: string, grade: ReviewGrade) => void;
 
-  importData: (state: AppState) => void;
+  exportData: () => void;
+  importData: (state: unknown) => void;
   resetData: () => void;
 }
 
 const StoreContext = createContext<StoreContextValue | null>(null);
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AppState>(() => normalize(loadFromStorage()));
+  const [persisted, setPersisted] = useState<PersistedState>(() => normalize(loadFromStorage() ?? sampleState()));
   const [page, setPage] = useState<PageId>("dashboard");
 
-  // Persist on every change (debounce-free; payloads are small).
   useEffect(() => {
-    saveToStorage(state);
-  }, [state]);
+    saveToStorage(persisted);
+  }, [persisted]);
 
   // Apply theme to <html>.
   useEffect(() => {
     const root = document.documentElement;
-    if (state.settings.theme === "light") {
+    if (persisted.settings.theme === "light") {
       root.classList.remove("dark");
       root.classList.add("light");
     } else {
       root.classList.add("dark");
       root.classList.remove("light");
     }
-  }, [state.settings.theme]);
+  }, [persisted.settings.theme]);
+
+  const state = useMemo(() => viewOf(persisted), [persisted]);
 
   const value = useMemo<StoreContextValue>(() => {
+    // Update the active course in place.
+    const patchActive = (fn: (c: Course) => Course) =>
+      setPersisted((p) => ({ ...p, courses: p.courses.map((c) => (c.id === p.activeCourseId ? fn(c) : c)) }));
+
     return {
       state,
       page,
       setPage,
 
-      setProfile: (patch) => setState((s) => ({ ...s, profile: { ...s.profile, ...patch } })),
-      setModes: (patch) => setState((s) => ({ ...s, modes: { ...s.modes, ...patch } })),
-      setSettings: (patch) => setState((s) => ({ ...s, settings: { ...s.settings, ...patch } })),
-      setAI: (patch) => setState((s) => ({ ...s, ai: { ...s.ai, ...patch } })),
+      courses: persisted.courses.map((c) => ({ id: c.id, name: c.profile.courseName || "Untitled course" })),
+      activeCourseId: persisted.activeCourseId,
+      setActiveCourse: (id) => setPersisted((p) => ({ ...p, activeCourseId: id })),
+      addCourse: () =>
+        setPersisted((p) => {
+          const c = blankCourse(p.settings.defaultModel);
+          return { ...p, courses: [...p.courses, c], activeCourseId: c.id };
+        }),
+      removeCourse: (id) =>
+        setPersisted((p) => {
+          const remaining = p.courses.filter((c) => c.id !== id);
+          const courses = remaining.length ? remaining : [blankCourse(p.settings.defaultModel)];
+          const activeCourseId = id === p.activeCourseId ? courses[0].id : p.activeCourseId;
+          return { ...p, courses, activeCourseId };
+        }),
 
-      addSource: (src) => setState((s) => ({ ...s, sources: [src, ...s.sources] })),
+      setProfile: (patch) => patchActive((c) => ({ ...c, profile: { ...c.profile, ...patch } })),
+      setModes: (patch) => setPersisted((p) => ({ ...p, modes: { ...p.modes, ...patch } })),
+      setSettings: (patch) => setPersisted((p) => ({ ...p, settings: { ...p.settings, ...patch } })),
+      setAI: (patch) => setPersisted((p) => ({ ...p, ai: { ...p.ai, ...patch } })),
+
+      addSource: (src) => patchActive((c) => ({ ...c, sources: [src, ...c.sources] })),
       updateSource: (id, patch) =>
-        setState((s) => ({
-          ...s,
-          sources: s.sources.map((x) => (x.id === id ? { ...x, ...patch } : x)),
-        })),
-      removeSource: (id) => setState((s) => ({ ...s, sources: s.sources.filter((x) => x.id !== id) })),
+        patchActive((c) => ({ ...c, sources: c.sources.map((x) => (x.id === id ? { ...x, ...patch } : x)) })),
+      removeSource: (id) => patchActive((c) => ({ ...c, sources: c.sources.filter((x) => x.id !== id) })),
 
       upsertWeak: (t) =>
-        setState((s) => {
-          const exists = s.weakTopics.some((x) => x.id === t.id);
-          return {
-            ...s,
-            weakTopics: exists ? s.weakTopics.map((x) => (x.id === t.id ? t : x)) : [...s.weakTopics, t],
-          };
+        patchActive((c) => {
+          const exists = c.weakTopics.some((x) => x.id === t.id);
+          return { ...c, weakTopics: exists ? c.weakTopics.map((x) => (x.id === t.id ? t : x)) : [...c.weakTopics, t] };
         }),
-      removeWeak: (id) => setState((s) => ({ ...s, weakTopics: s.weakTopics.filter((x) => x.id !== id) })),
+      removeWeak: (id) => patchActive((c) => ({ ...c, weakTopics: c.weakTopics.filter((x) => x.id !== id) })),
 
-      addOutput: (o) => setState((s) => ({ ...s, outputs: [o, ...s.outputs] })),
-      removeOutput: (id) => setState((s) => ({ ...s, outputs: s.outputs.filter((x) => x.id !== id) })),
+      addOutput: (o) => patchActive((c) => ({ ...c, outputs: [o, ...c.outputs] })),
+      removeOutput: (id) => patchActive((c) => ({ ...c, outputs: c.outputs.filter((x) => x.id !== id) })),
 
-      addCards: (cards) => setState((s) => ({ ...s, flashcards: [...cards, ...s.flashcards] })),
+      addCards: (cards) => patchActive((c) => ({ ...c, flashcards: [...cards, ...c.flashcards] })),
       updateCard: (id, patch) =>
-        setState((s) => ({
-          ...s,
-          flashcards: s.flashcards.map((c) => (c.id === id ? { ...c, ...patch } : c)),
-        })),
-      removeCard: (id) => setState((s) => ({ ...s, flashcards: s.flashcards.filter((c) => c.id !== id) })),
+        patchActive((c) => ({ ...c, flashcards: c.flashcards.map((x) => (x.id === id ? { ...x, ...patch } : x)) })),
+      removeCard: (id) => patchActive((c) => ({ ...c, flashcards: c.flashcards.filter((x) => x.id !== id) })),
       reviewFlashcard: (id, grade) =>
-        setState((s) => ({
-          ...s,
-          flashcards: s.flashcards.map((c) => (c.id === id ? reviewCard(c, grade) : c)),
-        })),
+        patchActive((c) => ({ ...c, flashcards: c.flashcards.map((x) => (x.id === id ? reviewCard(x, grade) : x)) })),
 
-      importData: (next) => setState(normalize(next)),
+      exportData: () => exportJSON(persisted),
+      importData: (next) => setPersisted(normalize(next)),
       resetData: () => {
         clearStorage();
-        setState(sampleState());
+        setPersisted(normalize(sampleState()));
         setPage("dashboard");
       },
     };
-  }, [state, page]);
+  }, [persisted, state, page]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

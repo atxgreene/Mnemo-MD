@@ -1,5 +1,27 @@
-import type { AppState } from "../types";
+import type { AppState, Course, ModelTarget, StudyProfile } from "../types";
 import { uid } from "../lib/storage";
+
+/** An empty course profile for new courses. */
+export function emptyProfile(model: ModelTarget = "Claude"): StudyProfile {
+  return {
+    courseName: "",
+    professor: "",
+    examName: "",
+    examDate: "",
+    topics: [],
+    difficulty: "Standard exam level",
+    preferredModel: model,
+    studyGoal: "",
+    studyHoursPerDay: 3,
+    gradingNotes: "",
+    professorWordingNotes: "",
+  };
+}
+
+/** A fresh, empty course. */
+export function blankCourse(model: ModelTarget = "Claude"): Course {
+  return { id: uid("course_"), profile: emptyProfile(model), sources: [], weakTopics: [], outputs: [], flashcards: [] };
+}
 
 /**
  * Default seed data so the app is immediately useful on first run.

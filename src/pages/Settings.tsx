@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useStore } from "../store";
 import type { ModelTarget } from "../types";
-import { exportJSON, importJSON } from "../lib/exporters";
+import { importJSON } from "../lib/exporters";
 import { Panel, SectionTitle, Field, Toggle } from "../ui";
 import Disclaimer from "../components/Disclaimer";
 import InstallButton from "../components/InstallButton";
@@ -10,7 +10,7 @@ import ConnectionsPanel from "../components/ConnectionsPanel";
 const MODELS: ModelTarget[] = ["Claude", "ChatGPT", "Gemini", "Local LLM"];
 
 export default function Settings() {
-  const { state, setSettings, setModes, importData, resetData } = useStore();
+  const { state, setSettings, setModes, importData, resetData, exportData } = useStore();
   const s = state.settings;
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState<string | null>(null);
@@ -84,7 +84,7 @@ export default function Settings() {
         <h3 className="mb-1 font-semibold">Data</h3>
         <p className="mb-3 text-sm text-slate-400">Everything is stored locally in this browser. Back it up or move it between devices.</p>
         <div className="flex flex-wrap gap-2">
-          <button className="btn btn-primary btn-sm" onClick={() => exportJSON(state)}>⬇ Export all data (JSON)</button>
+          <button className="btn btn-primary btn-sm" onClick={() => exportData()}>⬇ Export all data (JSON)</button>
           <button className="btn btn-ghost btn-sm" onClick={() => fileRef.current?.click()}>⬆ Import backup</button>
           <input ref={fileRef} type="file" accept="application/json" className="hidden" onChange={(e) => onImport(e.target.files?.[0])} />
           <button

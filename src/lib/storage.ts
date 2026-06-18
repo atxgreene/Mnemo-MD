@@ -1,4 +1,4 @@
-import type { AppState } from "../types";
+import type { PersistedState } from "../types";
 
 /**
  * Local-first persistence. Everything lives in the browser — no backend,
@@ -12,7 +12,7 @@ export function uid(prefix = ""): string {
   return prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
-export function saveToStorage(state: AppState): void {
+export function saveToStorage(state: PersistedState): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
@@ -20,11 +20,12 @@ export function saveToStorage(state: AppState): void {
   }
 }
 
-export function loadFromStorage(): AppState | null {
+/** Returns the raw parsed payload (old single-course or new multi-course); the store normalizes it. */
+export function loadFromStorage(): unknown {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as AppState;
+    return JSON.parse(raw);
   } catch {
     return null;
   }

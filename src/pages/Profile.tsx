@@ -13,7 +13,7 @@ const DIFFICULTIES = [
 ];
 
 export default function Profile() {
-  const { state, setProfile, upsertWeak } = useStore();
+  const { state, setProfile, upsertWeak, courses, activeCourseId, addCourse, removeCourse } = useStore();
   const p = state.profile;
 
   const applyTemplate = (t: CourseTemplate) => {
@@ -36,6 +36,30 @@ export default function Profile() {
   return (
     <div className="space-y-5">
       <SectionTitle icon="🎓" title="Course Profile" subtitle="Saved locally. Powers context in every prompt." />
+
+      <Panel>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="truncate font-semibold">{p.courseName || "Untitled course"}</h3>
+            <p className="text-xs text-slate-400">
+              {courses.length} course{courses.length === 1 ? "" : "s"} on this device · switch from the sidebar
+            </p>
+          </div>
+          <div className="flex flex-none gap-2">
+            <button className="btn btn-ghost btn-sm" onClick={addCourse}>＋ New course</button>
+            <button
+              className="btn btn-ghost btn-sm !text-rose-300"
+              onClick={() => {
+                if (confirm(`Delete "${p.courseName || "this course"}" and all its notes, cards, and outputs? This cannot be undone.`)) {
+                  removeCourse(activeCourseId);
+                }
+              }}
+            >
+              Delete course
+            </button>
+          </div>
+        </div>
+      </Panel>
 
       <Panel>
         <SectionTitle icon="📦" title="Start from a template" subtitle="One tap loads topics for a common subject — then tweak below." />
