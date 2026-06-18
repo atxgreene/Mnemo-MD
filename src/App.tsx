@@ -1,6 +1,7 @@
 import { useStore } from "./store";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
+import Guide from "./pages/Guide";
 import Profile from "./pages/Profile";
 import Sources from "./pages/Sources";
 import PromptLab from "./pages/PromptLab";
@@ -24,6 +25,7 @@ export default function App() {
       <main className="min-w-0 flex-1">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:py-8">
           {page === "dashboard" && <Dashboard />}
+          {page === "guide" && <Guide />}
           {page === "profile" && <Profile />}
           {page === "sources" && <Sources />}
           {page === "prompt-lab" && <PromptLab />}

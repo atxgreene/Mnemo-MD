@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "../store";
 import type { Flashcard, ReviewGrade } from "../types";
 import { dueCards, deckStats, previewInterval, newFlashcard, parseCardsCSV } from "../lib/srs";
@@ -36,6 +36,29 @@ export default function Flashcards() {
     setQueue(g === "again" ? [...rest, current.id] : rest);
     setFlipped(false);
   };
+
+  // Keyboard shortcuts during a review session: Space/Enter flips, 1–4 grades.
+  useEffect(() => {
+    if (!reviewing || !current) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (!flipped && (e.key === " " || e.key === "Enter")) {
+        e.preventDefault();
+        setFlipped(true);
+        return;
+      }
+      if (flipped) {
+        const map: Record<string, ReviewGrade> = { "1": "again", "2": "hard", "3": "good", "4": "easy" };
+        const g = map[e.key];
+        if (g) {
+          e.preventDefault();
+          grade(g);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviewing, flipped, current?.id, queue]);
 
   return (
     <div className="space-y-5">
@@ -102,6 +125,9 @@ export default function Flashcards() {
                   ))}
                 </div>
               )}
+              <p className="mt-3 text-center text-[11px] text-slate-500">
+                Tip: <b>Space</b> to flip · <b>1</b> Again · <b>2</b> Hard · <b>3</b> Good · <b>4</b> Easy
+              </p>
             </div>
           )}
         </Panel>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useStore } from "../store";
 import { calculateDaysUntilExam, formatDate } from "../lib/dates";
 import { recommendedOrder, studyConfidenceScore, band } from "../lib/weakness";
@@ -35,6 +36,8 @@ export default function Dashboard() {
         subtitle={profile.courseName ? `${profile.courseName} · ${profile.examName}` : "Set up your course profile to begin."}
         right={<StatusBadges />}
       />
+
+      <QuickStart />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         <Stat label="Days to exam" value={days === null ? "—" : days < 0 ? "past" : days} accent />
@@ -126,6 +129,64 @@ export default function Dashboard() {
       </Panel>
 
       <Disclaimer />
+    </div>
+  );
+}
+
+const QUICKSTART_KEY = "mnemo-med:quickstart-dismissed";
+
+function QuickStart() {
+  const { setPage } = useStore();
+  const [dismissed, setDismissed] = useState(() => {
+    try {
+      return localStorage.getItem(QUICKSTART_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
+  if (dismissed) return null;
+
+  const close = () => {
+    try {
+      localStorage.setItem(QUICKSTART_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setDismissed(true);
+  };
+
+  const steps = [
+    { n: 1, label: "Set up course", page: "profile" as const },
+    { n: 2, label: "Add notes", page: "sources" as const },
+    { n: 3, label: "Generate", page: "prompt-lab" as const },
+    { n: 4, label: "Review", page: "flashcards" as const },
+    { n: 5, label: "Cram plan", page: "cram" as const },
+  ];
+
+  return (
+    <div className="glass rounded-2xl p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="font-semibold">👋 New here? Here's the 5-step study loop</h3>
+          <p className="mt-0.5 text-sm text-slate-400">
+            A sample course is loaded so you can explore. Tap a step to jump in, or read the full guide.
+          </p>
+        </div>
+        <button className="flex-none text-slate-500 hover:text-slate-200" onClick={close} aria-label="Dismiss">
+          ✕
+        </button>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {steps.map((s) => (
+          <button key={s.n} className="chip hover:ring-1 hover:ring-teal-400/40" onClick={() => setPage(s.page)}>
+            <span className="font-semibold text-teal-300">{s.n}</span> {s.label}
+          </button>
+        ))}
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button className="btn btn-primary btn-sm" onClick={() => setPage("guide")}>📖 Read the Guide</button>
+        <button className="btn btn-ghost btn-sm" onClick={close}>Got it</button>
+      </div>
     </div>
   );
 }

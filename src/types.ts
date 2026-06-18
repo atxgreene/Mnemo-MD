@@ -170,6 +170,7 @@ export interface MnemoSettings {
 
 export type PageId =
   | "dashboard"
+  | "guide"
   | "profile"
   | "sources"
   | "prompt-lab"
