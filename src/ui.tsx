@@ -24,19 +24,19 @@ export function SectionTitle({
   right?: React.ReactNode;
 }) {
   return (
-    <div className="mb-4 flex items-start justify-between gap-3">
+    <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
       <div className="flex items-start gap-3">
         {icon && (
           <span className="grid h-9 w-9 flex-none place-items-center rounded-xl border border-white/10 bg-white/5 text-lg">
             {icon}
           </span>
         )}
-        <div>
+        <div className="min-w-0">
           <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
           {subtitle && <p className="mt-0.5 text-sm text-slate-400">{subtitle}</p>}
         </div>
       </div>
-      {right}
+      {right && <div className="min-w-0">{right}</div>}
     </div>
   );
 }
