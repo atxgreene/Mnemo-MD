@@ -218,7 +218,9 @@ is fully useful by generating elite prompts you paste into any model.
 - ✅ Multi-course memory — keep many courses on one device, each with its own
   profile, sources, weak topics, flashcards, and outputs; switch from the
   sidebar. (Old single-course data migrates automatically.)
-- ⏳ Adaptive exams
+- ✅ Adaptive exams — a practice exam that weights questions toward your weak
+  topics and adjusts difficulty to your performance (a local IRT/CAT loop over
+  your flashcard deck), then feeds per-topic results back into the tracker.
 - ⏳ Mobile app packaging (Tauri/Capacitor)
 - ⏳ Full Mnemosyne backend · multi-device sync · collaborative study groups
   (require a backend)

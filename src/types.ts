@@ -199,6 +199,7 @@ export type PageId =
   | "verified"
   | "flashcards"
   | "quiz"
+  | "adaptive"
   | "weakness"
   | "cram"
   | "vault"
