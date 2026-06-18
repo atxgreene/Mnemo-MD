@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Source-locked study intelligence for premed finals.",
+  "description": "Source-locked study intelligence for medical school.",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

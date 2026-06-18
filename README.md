@@ -1,6 +1,6 @@
 # Mnemo MD
 
-**Source-locked study intelligence for premed finals.**
+**Source-locked study intelligence for medical school.**
 
 ### ▶ [Open the live app → atxgreene.github.io/Mnemo-MD](https://atxgreene.github.io/Mnemo-MD/)
 
@@ -11,13 +11,13 @@
 Works on desktop and mobile, installs as an app, and runs offline. No account, no
 API key — your notes stay on your device.
 
-Mnemo MD is a local-first, source-locked study cockpit for premed students. It
-transforms notes, slides, graphs, and professor wording into review sheets,
-Anki cards, practice questions, and finals cram plans — without inventing
+Mnemo MD is a local-first, source-locked study cockpit for medical students. It
+transforms lecture notes, slides, graphs, and professor wording into review
+sheets, Anki cards, practice questions, and cram plans — without inventing
 unsupported answers.
 
 It is the first productized layer of **Mnemosyne** — the memory/retrieval
-architecture. Mnemosyne is the engine; Mnemo Med is the premed study product
+architecture. Mnemosyne is the engine; Mnemo Med is the med-school study product
 built on top of it.
 
 > **Mnemo Med is an educational study tool.** Verify all outputs against your
@@ -27,11 +27,11 @@ built on top of it.
 
 ## Why it exists
 
-Premed students already lean on Claude/ChatGPT to parse note sets, build review
-sheets, make Anki cards, write practice questions, analyze graphs, and answer
-from lecture material — because good models hallucinate less and preserve the
-professor's exact wording. Mnemo Med turns that workflow into a real, repeatable
-study system:
+Medical students already lean on Claude/ChatGPT to parse dense note sets, build
+review sheets, make Anki cards, write practice questions, analyze graphs, and
+answer from lecture material — because good models hallucinate less and preserve
+the professor's exact wording. Mnemo Med turns that workflow into a real,
+repeatable study system:
 
 - **Source-locked** generation — every prompt forces the model to use *only*
   your provided notes and to flag anything unsupported.
@@ -69,15 +69,16 @@ study system:
   type + deck — no field mapping) or as CSV.
 - **Course templates** — one-tap starter courses for Anatomy, Physiology,
   Biochem, Pharmacology, Micro, Immunology, Pathology, Genetics, and the three
-  MCAT sections (loads topics + seeds the weakness tracker).
+  Histology, Neuroanatomy, Biostatistics, and USMLE Step 1 (loads topics + seeds
+  the weakness tracker).
 - **In-app Guide & printable outputs** — a built-in best-practices guide, plus
   Print / Save-as-PDF for any saved output.
 - **Quiz Mode** — a timed, scored self-test auto-generated from your deck
   (multiple choice with distractors drawn from your other cards, or self-graded
   recall for small decks), with a missed-question review at the end.
 - **Generation modes (global toggles)** — Source-Locked, Preserve Professor
-  Language, Premed Reasoning, High-Yield, Finals Cram, Academic Integrity.
-- **Prompt Lab** — Review Sheet, Explain Like I'm Premed, Professor Wording
+  Language, Clinical Reasoning, High-Yield, Finals Cram, Academic Integrity.
+- **Prompt Lab** — Review Sheet, Explain the Concept, Professor Wording
   Parser, Weak Topic Drill, and Missed Question Autopsy.
 - **Anki Factory** — Basic/Cloze/Definition/Mechanism/Pathway/Compare-contrast/
   Clinical/Image-occlusion cards exported as `Front,Back,Tags,Source,Difficulty`.

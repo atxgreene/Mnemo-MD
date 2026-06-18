@@ -3,7 +3,7 @@ import { Panel, SectionTitle } from "../ui";
 import Disclaimer from "../components/Disclaimer";
 
 /**
- * In-app "how to use" guide + best practices, written for premed/med students.
+ * In-app "how to use" guide + best practices, written for medical students.
  * Keeps everything scannable: the study loop, do/don't tips, and a tool cheat sheet.
  */
 export default function Guide() {
@@ -30,7 +30,7 @@ export default function Guide() {
         <SectionTitle icon="🔄" title="The Study Loop" subtitle="Repeat this cycle as the exam approaches." />
         <div className="space-y-3">
           <Step n={1} title="Set up your course" go={() => setPage("profile")} goLabel="Course Profile"
-            body="Enter your class, professor, exam date, and topics — or tap a subject template (Anatomy, Physiology, Pharm, MCAT sections…) to load topics instantly. This feeds context into everything and powers the cram plan." />
+            body="Enter your block/course, professor, exam date, and topics — or tap a subject template (Anatomy, Physiology, Pharmacology, Pathology, USMLE Step 1…) to load topics instantly. This feeds context into everything and powers the cram plan." />
           <Step n={2} title="Add your material" go={() => setPage("sources")} goLabel="Source Library"
             body="Paste notes/slides, or import a PDF or a photo of your notes (text is extracted/OCR'd on your device). Tag each source by topic and lock the wording when the professor's exact phrasing matters." />
           <Step n={3} title="Generate study material" go={() => setPage("prompt-lab")} goLabel="Prompt Lab"
@@ -76,7 +76,7 @@ export default function Guide() {
         <SectionTitle icon="🧰" title="Tool Cheat Sheet" />
         <div className="space-y-2 text-sm">
           <Cheat icon="🧪" name="Prompt Lab" go={() => setPage("prompt-lab")}
-            desc="Review sheets, Explain-Like-I'm-Premed, professor-wording parser, weak-topic drills, missed-question autopsy." />
+            desc="Review sheets, concept explainers, professor-wording parser, weak-topic drills, missed-question autopsy." />
           <Cheat icon="🃏" name="Anki Factory" go={() => setPage("anki")}
             desc="Generate CSV-ready cards (Front,Back,Tags,Source,Difficulty). Paste the result into Flashcards to study them here." />
           <Cheat icon="✍️" name="Practice Builder" go={() => setPage("practice")}

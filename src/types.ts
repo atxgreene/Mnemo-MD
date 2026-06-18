@@ -97,7 +97,7 @@ export const PROMPT_MODE_LABELS: Record<PromptMode, string> = {
   "verified-answer": "Verified Answer Check",
   "weak-drill": "Weak Topic Drill",
   "cram-plan": "Finals Cram Plan",
-  "explain-premed": "Explain Like I'm Premed",
+  "explain-premed": "Explain the Concept",
   "professor-wording": "Professor Wording Parser",
   "practice-exam": "Practice Exam Builder",
   "missed-autopsy": "Missed Question Autopsy",

@@ -33,9 +33,9 @@ export function sampleState(): AppState {
 
   return {
     profile: {
-      courseName: "Cell Biology Final",
+      courseName: "Cell & Molecular Medicine",
       professor: "Dr. Example",
-      examName: "Final Exam",
+      examName: "Block 1 Exam",
       examDate: isoInDays(10),
       topics: [
         "membrane transport",
