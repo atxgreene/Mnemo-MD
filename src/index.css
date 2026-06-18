@@ -9,6 +9,20 @@
     height: 100%;
   }
 
+  /* Never allow sideways scroll on small screens. */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Comfortable tap targets and no iOS tap-highlight flash. */
+  button,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   body {
     @apply bg-ink-950 text-slate-100 antialiased;
     background-image:

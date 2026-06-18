@@ -32,7 +32,10 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-ink-950/80 px-4 py-3 backdrop-blur-xl lg:hidden">
+      <div
+        className="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-ink-950/80 px-4 pb-3 backdrop-blur-xl lg:hidden"
+        style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
+      >
         <Brand />
         <button className="btn btn-ghost btn-sm" onClick={() => setOpen((o) => !o)} aria-label="Menu">
           {open ? "✕" : "☰"} Menu
