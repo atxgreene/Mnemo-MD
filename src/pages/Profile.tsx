@@ -1,5 +1,7 @@
 import { useStore } from "../store";
 import type { ModelTarget } from "../types";
+import { TEMPLATES, type CourseTemplate } from "../data/templates";
+import { uid } from "../lib/storage";
 import { Panel, SectionTitle, Field, parseList } from "../ui";
 
 const MODELS: ModelTarget[] = ["Claude", "ChatGPT", "Gemini", "Local LLM"];
@@ -11,12 +13,49 @@ const DIFFICULTIES = [
 ];
 
 export default function Profile() {
-  const { state, setProfile } = useStore();
+  const { state, setProfile, upsertWeak } = useStore();
   const p = state.profile;
+
+  const applyTemplate = (t: CourseTemplate) => {
+    if (p.topics.length > 0 && !confirm(`Replace your current topics with the "${t.name}" template?`)) return;
+    setProfile({
+      topics: t.topics,
+      difficulty: t.difficulty,
+      courseName: p.courseName || t.name,
+      examName: p.examName || t.examName,
+    });
+    // Seed the weakness tracker with any topics not already tracked.
+    const tracked = new Set(state.weakTopics.map((w) => w.topic.toLowerCase()));
+    t.topics.forEach((topic) => {
+      if (!tracked.has(topic.toLowerCase())) {
+        upsertWeak({ id: uid("wk_"), topic, confidence: 3, missedQuestions: 0, notes: "", nextAction: "" });
+      }
+    });
+  };
 
   return (
     <div className="space-y-5">
       <SectionTitle icon="🎓" title="Course Profile" subtitle="Saved locally. Powers context in every prompt." />
+
+      <Panel>
+        <SectionTitle icon="📦" title="Start from a template" subtitle="One tap loads topics for a common subject — then tweak below." />
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {TEMPLATES.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => applyTemplate(t)}
+              className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 text-left transition hover:border-teal-400/40 hover:bg-teal-400/[0.06]"
+            >
+              <span className="text-xl">{t.emoji}</span>
+              <span className="min-w-0">
+                <span className="block text-sm font-semibold">{t.name}</span>
+                <span className="block text-[11px] text-slate-400">{t.blurb}</span>
+                <span className="mt-0.5 block text-[11px] text-teal-300">{t.topics.length} topics</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </Panel>
 
       <Panel>
         <div className="grid gap-4 sm:grid-cols-2">
