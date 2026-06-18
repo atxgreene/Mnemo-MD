@@ -4,6 +4,7 @@ import type { Flashcard, ReviewGrade } from "../types";
 import { dueCards, deckStats, previewInterval, newFlashcard, parseCardsCSV } from "../lib/srs";
 import { formatRelative } from "../lib/dates";
 import { exportCSV } from "../lib/exporters";
+import { exportApkg } from "../lib/apkg";
 import { Panel, SectionTitle, Field, EmptyState, parseList } from "../ui";
 
 const GRADES: { grade: ReviewGrade; label: string; cls: string }[] = [
@@ -17,6 +18,25 @@ export default function Flashcards() {
   const { state, addCards, removeCard, reviewFlashcard } = useStore();
   const cards = state.flashcards;
   const stats = deckStats(cards);
+
+  const [apkgBusy, setApkgBusy] = useState(false);
+  const [apkgMsg, setApkgMsg] = useState<string | null>(null);
+
+  const exportDeckApkg = async () => {
+    const deck = state.profile.courseName || "Mnemo Med";
+    const file = `${deck.replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "mnemo-med"}.apkg`;
+    try {
+      setApkgBusy(true);
+      setApkgMsg("Building Anki package…");
+      await exportApkg(deck, cards.map((c) => ({ front: c.front, back: c.back, tags: c.tags })), file);
+      setApkgMsg(null);
+    } catch (e) {
+      setApkgMsg("⚠️ " + (e instanceof Error ? e.message : "Export failed."));
+      setTimeout(() => setApkgMsg(null), 6000);
+    } finally {
+      setApkgBusy(false);
+    }
+  };
 
   // Review session ---------------------------------------------------------
   const [queue, setQueue] = useState<string[] | null>(null);
@@ -154,18 +174,24 @@ export default function Flashcards() {
           title={`All Cards (${cards.length})`}
           right={
             cards.length > 0 ? (
-              <button
-                className="btn btn-ghost btn-sm"
-                onClick={() => exportCSV(`${state.profile.courseName || "mnemo"}-deck`, [
-                  ["Front", "Back", "Tags", "Source", "Difficulty"],
-                  ...cards.map((c) => [c.front, c.back, c.tags.join(" "), c.deck, ""]),
-                ])}
-              >
-                ⬇ Export deck CSV
-              </button>
+              <div className="flex flex-wrap justify-end gap-2">
+                <button
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => exportCSV(`${state.profile.courseName || "mnemo"}-deck`, [
+                    ["Front", "Back", "Tags", "Source", "Difficulty"],
+                    ...cards.map((c) => [c.front, c.back, c.tags.join(" "), c.deck, ""]),
+                  ])}
+                >
+                  ⬇ CSV
+                </button>
+                <button className="btn btn-primary btn-sm" disabled={apkgBusy} onClick={exportDeckApkg}>
+                  {apkgBusy ? "Building…" : "⬇ Anki .apkg"}
+                </button>
+              </div>
             ) : undefined
           }
         />
+        {apkgMsg && <p className="mb-3 text-sm text-amber-300">{apkgMsg}</p>}
         {cards.length === 0 ? (
           <EmptyState icon="🗂️" title="No flashcards yet" hint="Add a card or import an Anki CSV below — then review it with spaced repetition." />
         ) : (

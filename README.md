@@ -64,7 +64,14 @@ study system:
 - **Flashcards (SRS)** — a local spaced-repetition deck using an Anki-flavored
   SM-2 scheduler. Add cards manually or import an Anki CSV (paste the Anki
   Factory output straight in), then review what's due with Again/Hard/Good/Easy
-  grading. Deck stats track new/learning/mature/due.
+  grading (Space to flip, 1–4 to grade). Deck stats track new/learning/mature/due.
+  Export the deck as a real **`.apkg`** (imports natively into Anki with a note
+  type + deck — no field mapping) or as CSV.
+- **Course templates** — one-tap starter courses for Anatomy, Physiology,
+  Biochem, Pharmacology, Micro, Immunology, Pathology, Genetics, and the three
+  MCAT sections (loads topics + seeds the weakness tracker).
+- **In-app Guide & printable outputs** — a built-in best-practices guide, plus
+  Print / Save-as-PDF for any saved output.
 - **Quiz Mode** — a timed, scored self-test auto-generated from your deck
   (multiple choice with distractors drawn from your other cards, or self-graded
   recall for small decks), with a missed-question review at the end.
