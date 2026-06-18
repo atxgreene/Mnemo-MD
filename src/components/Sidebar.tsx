@@ -5,6 +5,7 @@ import InstallButton from "./InstallButton";
 
 const NAV: { id: PageId; label: string; icon: string; group?: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: "🩺" },
+  { id: "guide", label: "Guide", icon: "📖" },
   { id: "profile", label: "Course Profile", icon: "🎓" },
   { id: "sources", label: "Source Library", icon: "📚" },
   { id: "prompt-lab", label: "Prompt Lab", icon: "🧪" },
