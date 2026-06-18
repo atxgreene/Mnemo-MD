@@ -57,12 +57,12 @@ function operatingRules(ctx: PromptContext): string[] {
     lines.push(`- SOURCE-LOCKED: ${SOURCE_LOCK_LINE}`);
     lines.push("- Cite the source title (and lecture number if present) for every claim.");
   } else {
-    lines.push("- Prefer the provided source material. You may add standard premed knowledge, but clearly label it '(outside notes)'.");
+    lines.push("- Prefer the provided source material. You may add standard medical knowledge, but clearly label it '(outside notes)'.");
   }
 
   if (m.preserveLanguage) lines.push(`- PRESERVE PROFESSOR LANGUAGE: ${PRESERVE_LANG_LINE}`);
   if (m.premedReasoning)
-    lines.push("- PREMED REASONING: Provide applied biological, chemical, anatomical, physiological, and clinical-style reasoning where appropriate (mechanism → effect → significance).");
+    lines.push("- CLINICAL REASONING: Provide applied anatomical, physiological, biochemical, pharmacological, and clinical reasoning where appropriate (mechanism → effect → clinical significance).");
   if (m.highYield)
     lines.push("- HIGH-YIELD: Prioritize exam-relevant concepts, likely traps, definitions, mechanisms, pathways, and professor-emphasized details.");
   if (m.finalsCram) lines.push("- FINALS CRAM: Compress into high-yield, testable, prioritized study material.");
@@ -284,8 +284,8 @@ function taskBlock(mode: PromptMode, ctx: PromptContext): string[] {
 
     case "explain-premed":
       return [
-        "## TASK — Explain Like I'm Premed",
-        `Explain ${o.topic ? `'${o.topic}'` : "the selected concept"} clearly for a premed student.`,
+        "## TASK — Explain the Concept",
+        `Explain ${o.topic ? `'${o.topic}'` : "the selected concept"} clearly for a medical student.`,
         "- Start with a plain-language intuition, then build to the precise mechanism.",
         "- Connect it to chemistry / biology / physiology fundamentals.",
         "- Use one concrete example and one clinical tie-in.",
@@ -321,7 +321,7 @@ function taskBlock(mode: PromptMode, ctx: PromptContext): string[] {
 export function generatePrompt(mode: PromptMode, ctx: PromptContext): string {
   const blocks: string[][] = [
     [
-      `You are Mnemo Med, a meticulous premed study assistant built on the Mnemosyne retrieval system. Target model: ${ctx.profile.preferredModel}.`,
+      `You are Mnemo Med, a meticulous medical-school study assistant built on the Mnemosyne retrieval system. Target model: ${ctx.profile.preferredModel}.`,
       "Follow every rule below exactly.",
     ],
     operatingRules(ctx),

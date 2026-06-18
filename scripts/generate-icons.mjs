@@ -34,9 +34,9 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
     <text x="60" y="86" font-family="Arial, sans-serif" font-size="78" font-weight="800" fill="#06121f" text-anchor="middle">M</text>
   </g>
   <text x="240" y="232" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Mnemo Med</text>
-  <text x="98" y="360" font-family="Arial, sans-serif" font-size="40" font-weight="600" fill="#cdd6f6">Source-locked study intelligence for premed finals.</text>
-  <text x="98" y="436" font-family="Arial, sans-serif" font-size="30" fill="#9aa6c4">Notes, slides &amp; professor wording → verified review sheets,</text>
-  <text x="98" y="478" font-family="Arial, sans-serif" font-size="30" fill="#9aa6c4">Anki cards, practice exams, and a finals cram plan.</text>
+  <text x="98" y="360" font-family="Arial, sans-serif" font-size="40" font-weight="600" fill="#cdd6f6">Source-locked study intelligence for medical school.</text>
+  <text x="98" y="436" font-family="Arial, sans-serif" font-size="30" fill="#9aa6c4">Lecture notes, slides &amp; professor wording → verified review</text>
+  <text x="98" y="478" font-family="Arial, sans-serif" font-size="30" fill="#9aa6c4">sheets, Anki cards, practice exams, and a cram plan.</text>
   <text x="98" y="566" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#5ad1c2">Local-first · No account · Works offline</text>
 </svg>`;
 tasks.push(sharp(Buffer.from(og)).png().toFile(join(pub, "og.png")));

@@ -1,5 +1,5 @@
 /**
- * One-tap starter courses for common premed/med subjects and the MCAT.
+ * One-tap starter courses for common medical-school subjects and boards.
  * Applying a template fills in topics (and fills empty profile fields),
  * removing the blank-slate friction of setting up from scratch.
  */
@@ -124,42 +124,56 @@ export const TEMPLATES: CourseTemplate[] = [
     ],
   },
   {
-    id: "mcat-bb",
-    name: "MCAT — Bio / Biochem",
-    emoji: "🧫",
-    blurb: "Biological & biochemical foundations.",
-    examName: "MCAT B/B Section",
-    difficulty: BOARD,
+    id: "histology",
+    name: "Histology",
+    emoji: "🔬",
+    blurb: "Tissues and microscopic structure.",
+    examName: "Histology Exam",
+    difficulty: STD,
     topics: [
-      "amino acids & proteins", "enzymes", "carbohydrate metabolism", "cellular respiration",
-      "the cell & organelles", "genetics & inheritance", "molecular biology", "the nervous system",
-      "the endocrine system", "the immune system", "circulatory & respiratory", "renal & excretory",
+      "epithelium", "connective tissue", "muscle tissue", "nervous tissue",
+      "blood & hematopoiesis", "cartilage & bone", "lymphoid organs", "skin & integument",
+      "GI tract histology", "respiratory histology", "renal histology", "endocrine glands",
     ],
   },
   {
-    id: "mcat-cp",
-    name: "MCAT — Chem / Phys",
-    emoji: "⚛️",
-    blurb: "Chemical & physical foundations.",
-    examName: "MCAT C/P Section",
-    difficulty: BOARD,
-    topics: [
-      "kinematics & forces", "work & energy", "fluids", "thermodynamics",
-      "electrostatics & circuits", "waves & sound", "optics", "atomic structure",
-      "bonding & stoichiometry", "acids & bases", "thermochemistry & kinetics", "electrochemistry",
-    ],
-  },
-  {
-    id: "mcat-ps",
-    name: "MCAT — Psych / Soc",
+    id: "neuro",
+    name: "Neuroanatomy & Neuro",
     emoji: "🧠",
-    blurb: "Psychological & social foundations.",
-    examName: "MCAT P/S Section",
+    blurb: "CNS structure, tracts, and function.",
+    examName: "Neuroscience Exam",
+    difficulty: HARD,
+    topics: [
+      "neuron & synapse", "cerebral cortex", "basal ganglia", "cerebellum",
+      "brainstem & cranial nerves", "spinal cord & tracts", "ascending/descending pathways", "limbic system",
+      "ventricles & CSF", "blood supply & stroke syndromes", "neurotransmitter systems", "special senses",
+    ],
+  },
+  {
+    id: "biostats",
+    name: "Biostatistics & Epi",
+    emoji: "📊",
+    blurb: "Stats and epidemiology for boards.",
+    examName: "Biostatistics Exam",
+    difficulty: STD,
+    topics: [
+      "study designs", "sensitivity & specificity", "PPV & NPV", "incidence & prevalence",
+      "relative risk & odds ratio", "hypothesis testing & p-values", "confidence intervals", "bias & confounding",
+      "screening", "survival analysis", "number needed to treat", "ethics & informed consent",
+    ],
+  },
+  {
+    id: "usmle-step1",
+    name: "USMLE Step 1 (high-yield)",
+    emoji: "🩺",
+    blurb: "Integrated, organ-system high-yield.",
+    examName: "USMLE Step 1",
     difficulty: BOARD,
     topics: [
-      "sensation & perception", "learning & memory", "cognition", "motivation & emotion",
-      "personality theories", "psychological disorders", "social cognition", "attitudes & behavior",
-      "social structure", "demographics", "social inequality", "identity & self",
+      "cardiovascular", "respiratory", "renal", "gastrointestinal",
+      "endocrine", "reproductive", "hematology & oncology", "musculoskeletal",
+      "neurology & psychiatry", "immunology", "microbiology", "pharmacology & toxicology",
     ],
   },
 ];
+

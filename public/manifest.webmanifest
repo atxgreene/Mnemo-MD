@@ -1,7 +1,7 @@
 {
   "name": "Mnemo Med — Source-Locked Study Cockpit",
   "short_name": "Mnemo Med",
-  "description": "Source-locked study intelligence for premed finals.",
+  "description": "Source-locked study intelligence for medical school.",
   "start_url": ".",
   "scope": "./",
   "display": "standalone",

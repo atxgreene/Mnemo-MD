@@ -4,7 +4,7 @@ import type { ModeToggles } from "../types";
 const MODES: { key: keyof ModeToggles; label: string; desc: string }[] = [
   { key: "sourceLocked", label: "Source-Locked", desc: "Use only provided notes; flag unsupported answers" },
   { key: "preserveLanguage", label: "Preserve Professor Language", desc: "Keep exact wording & definitions" },
-  { key: "premedReasoning", label: "Premed Reasoning", desc: "Mechanism-level, clinical framing" },
+  { key: "premedReasoning", label: "Clinical Reasoning", desc: "Mechanism-level, clinical framing" },
   { key: "highYield", label: "High-Yield", desc: "Exam-relevant concepts & traps" },
   { key: "finalsCram", label: "Finals Cram", desc: "Compressed, prioritized material" },
   { key: "academicIntegrity", label: "Academic Integrity", desc: "Study & understand, never cheat" },
