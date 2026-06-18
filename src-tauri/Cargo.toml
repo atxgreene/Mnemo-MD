@@ -1,0 +1,19 @@
+[package]
+name = "mnemo-med"
+version = "1.0.0"
+description = "Source-locked study intelligence for medical school."
+authors = ["atxgreene"]
+edition = "2021"
+
+# The app's library — main.rs calls into it; mobile targets reuse it.
+[lib]
+name = "mnemo_med_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

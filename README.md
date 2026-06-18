@@ -124,12 +124,31 @@ shell and runs offline. Install it for an app icon, its own window, and full
 offline use on desktop or mobile — use the **Install app** button in the sidebar
 (or in *Settings*), or your browser's Install / "Add to Home Screen" option.
 
+### Desktop app (Tauri)
+
+A native desktop build is configured under [`src-tauri/`](src-tauri/). It wraps
+the same web build in a tiny native window — no separate codebase.
+
+Prerequisites: [Rust](https://rustup.rs) + your OS's WebView deps (see the
+[Tauri prerequisites](https://v2.tauri.app/start/prerequisites/); on Linux,
+`webkit2gtk` and `librsvg`). Then:
+
+```bash
+npm install
+npm run tauri:dev      # run the desktop app against the dev server
+npm run tauri:build    # produce native installers (.dmg / .msi / .AppImage / .deb)
+```
+
+The window icon ships as PNG. For polished Windows/macOS installer icons, run
+`npm run tauri icon public/icon-512.png` once (generates `.ico`/`.icns` into
+`src-tauri/icons/`) and add them to `bundle.icon` in `src-tauri/tauri.conf.json`.
+
 ---
 
 ## Usage guide
 
 1. **Set up your course** in *Course Profile* (or start from the included
-   *Cell Biology Final* sample).
+   *Cell & Molecular Medicine* sample).
 2. **Add material** in *Source Library* — paste text or **import a PDF / image /
    file** (PDFs are text-extracted; images are OCR'd in-browser). Tag sources
    and lock wording where the professor's phrasing matters.
@@ -222,7 +241,9 @@ is fully useful by generating elite prompts you paste into any model.
 - ✅ Adaptive exams — a practice exam that weights questions toward your weak
   topics and adjusts difficulty to your performance (a local IRT/CAT loop over
   your flashcard deck), then feeds per-topic results back into the tracker.
-- ⏳ Mobile app packaging (Tauri/Capacitor)
+- ✅ Desktop app packaging — Tauri scaffold (`src-tauri/`) builds native
+  installers from the same web build (`npm run tauri:build`).
+- ⏳ Mobile app store packaging (Tauri mobile / Capacitor)
 - ⏳ Full Mnemosyne backend · multi-device sync · collaborative study groups
   (require a backend)
 
