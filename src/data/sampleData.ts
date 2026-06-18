@@ -180,6 +180,18 @@ export function sampleState(): AppState {
       finalsCram: false,
       academicIntegrity: true,
     },
+    ai: {
+      enabled: false,
+      provider: "claude",
+      claudeModel: "claude-opus-4-8",
+      openaiModel: "gpt-4o",
+      geminiModel: "gemini-1.5-flash",
+      claudeKey: "",
+      openaiKey: "",
+      geminiKey: "",
+      geminiAuthMode: "key",
+      geminiClientId: "",
+    },
   };
 }
 

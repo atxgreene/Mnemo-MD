@@ -168,6 +168,25 @@ export interface MnemoSettings {
   theme: "dark" | "light";
 }
 
+/** Optional AI connection (opt-in, disabled by default). Keys live on-device only. */
+export type AIProvider = "claude" | "openai" | "gemini";
+
+export interface AISettings {
+  enabled: boolean;
+  provider: AIProvider;
+  claudeModel: string;
+  openaiModel: string;
+  geminiModel: string;
+  claudeKey: string;
+  openaiKey: string;
+  geminiKey: string;
+  /** Gemini can authenticate with an API key or via Google OAuth (PKCE). */
+  geminiAuthMode: "key" | "oauth";
+  geminiClientId: string;
+  geminiAccessToken?: string;
+  geminiTokenExpiry?: number;
+}
+
 export type PageId =
   | "dashboard"
   | "guide"
@@ -194,4 +213,5 @@ export interface AppState {
   flashcards: Flashcard[];
   settings: MnemoSettings;
   modes: ModeToggles;
+  ai: AISettings;
 }

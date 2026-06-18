@@ -205,9 +205,12 @@ is fully useful by generating elite prompts you paste into any model.
 - ✅ File upload parsing, in-browser PDF extraction, in-browser OCR
 - ✅ Semantic retrieval (TF-IDF cosine similarity)
 - ✅ Quiz mode + spaced-repetition scheduler (SM-2) with a local flashcard deck
-- ⏳ Optional AI API integrations + in-app image analysis (auth approach under
-  design — API key today; OAuth/PKCE where providers support it)
-- ⏳ Downloadable `.apkg` Anki package (CSV export ships today)
+- ✅ Course templates + printable/PDF outputs + in-app Guide
+- ✅ Real `.apkg` Anki export (in-browser SQLite + zip)
+- ✅ Optional AI adapter — opt-in "Run with AI" for Claude / OpenAI / Gemini
+  (keys on-device, streaming), plus an experimental Gemini Google-OAuth (PKCE)
+  path. Disabled by default; the copy/paste workflow still works without it.
+- ⏳ In-app image *analysis* via a vision API (prompt-based today)
 
 **v3**
 - Full Mnemosyne backend
