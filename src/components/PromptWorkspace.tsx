@@ -4,7 +4,7 @@ import type { PromptMode } from "../types";
 import { PROMPT_MODE_LABELS } from "../types";
 import { uid } from "../lib/storage";
 import { exportMarkdown, exportText } from "../lib/exporters";
-import { aiReady, providerLabel, runPrompt } from "../lib/ai/run";
+import { aiReady, providerLabel, runPrompt, type ImageInput } from "../lib/ai/run";
 import { CopyButton } from "../ui";
 
 /**
@@ -17,11 +17,14 @@ export default function PromptWorkspace({
   prompt,
   sourceIds = [],
   title,
+  image,
 }: {
   mode: PromptMode;
   prompt: string;
   sourceIds?: string[];
   title?: string;
+  /** When provided (Image/Graph mode), the AI run includes the image for vision analysis. */
+  image?: ImageInput;
 }) {
   const { state, addOutput, setPage } = useStore();
   const ai = state.ai;
@@ -54,10 +57,15 @@ export default function PromptWorkspace({
     setResult("");
     resultRef.current = "";
     try {
-      const full = await runPrompt(prompt, ai, (delta) => {
-        resultRef.current += delta;
-        setResult(resultRef.current);
-      });
+      const full = await runPrompt(
+        prompt,
+        ai,
+        (delta) => {
+          resultRef.current += delta;
+          setResult(resultRef.current);
+        },
+        image
+      );
       const text = full || resultRef.current;
       setResult(text);
       // Auto-save the AI response to the Vault.
@@ -92,7 +100,7 @@ export default function PromptWorkspace({
           <button className="btn btn-ghost btn-sm" onClick={() => { savePrompt(); setPage("vault"); }}>💾 Save to Vault</button>
           {canRun && (
             <button className="btn btn-primary btn-sm" disabled={running} onClick={run}>
-              {running ? "Running…" : `▶ Run with ${providerLabel(ai.provider)}`}
+              {running ? "Running…" : `▶ ${image ? "Analyze" : "Run"} with ${providerLabel(ai.provider)}`}
             </button>
           )}
           <CopyButton text={prompt} label="Copy prompt" />

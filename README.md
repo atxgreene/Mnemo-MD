@@ -210,7 +210,9 @@ is fully useful by generating elite prompts you paste into any model.
 - ✅ Optional AI adapter — opt-in "Run with AI" for Claude / OpenAI / Gemini
   (keys on-device, streaming), plus an experimental Gemini Google-OAuth (PKCE)
   path. Disabled by default; the copy/paste workflow still works without it.
-- ⏳ In-app image *analysis* via a vision API (prompt-based today)
+- ✅ In-app image analysis — when an AI is connected, Image/Graph mode sends the
+  uploaded figure to a vision-capable model and streams the analysis in-app
+  (still prompt-only when no AI is connected).
 
 **v3**
 - Full Mnemosyne backend
