@@ -7,5 +7,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: process.env.VITE_BASE || "/",
   plugins: [react()],
-  server: { port: 5173 },
+  // strictPort keeps the dev server on 5173 so the Tauri shell (devUrl) attaches reliably.
+  server: { port: 5173, strictPort: true },
+  // Tauri reads build output from dist/ (configured in src-tauri/tauri.conf.json).
 });
