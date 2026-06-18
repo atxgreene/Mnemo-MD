@@ -13,6 +13,7 @@ import ImageMode from "./pages/ImageMode";
 import VerifiedAnswers from "./pages/VerifiedAnswers";
 import Flashcards from "./pages/Flashcards";
 import Quiz from "./pages/Quiz";
+import AdaptiveExam from "./pages/AdaptiveExam";
 import WeaknessTracker from "./pages/WeaknessTracker";
 import CramPlanner from "./pages/CramPlanner";
 import OutputVault from "./pages/OutputVault";
@@ -58,6 +59,7 @@ export default function App() {
           {page === "verified" && <VerifiedAnswers />}
           {page === "flashcards" && <Flashcards />}
           {page === "quiz" && <Quiz />}
+          {page === "adaptive" && <AdaptiveExam />}
           {page === "weakness" && <WeaknessTracker />}
           {page === "cram" && <CramPlanner />}
           {page === "vault" && <OutputVault />}
