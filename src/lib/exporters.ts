@@ -1,4 +1,4 @@
-import type { AppState } from "../types";
+import type { PersistedState } from "../types";
 
 /** File export / import utilities. All client-side; nothing leaves the device. */
 
@@ -36,9 +36,9 @@ export function exportCSV(name: string, rows: string[][]): void {
   download(`${slug(name)}.csv`, csv, "text/csv;charset=utf-8");
 }
 
-export function exportJSON(state: AppState): void {
+export function exportJSON(state: PersistedState): void {
   // Never write AI keys/tokens into a backup file.
-  const safe: AppState = {
+  const safe: PersistedState = {
     ...state,
     ai: {
       ...state.ai,
@@ -49,12 +49,12 @@ export function exportJSON(state: AppState): void {
       geminiTokenExpiry: undefined,
     },
   };
-  const payload = JSON.stringify({ app: "mnemo-med", version: 1, exportedAt: Date.now(), state: safe }, null, 2);
+  const payload = JSON.stringify({ app: "mnemo-med", version: 3, exportedAt: Date.now(), state: safe }, null, 2);
   download(`mnemo-med-backup-${new Date().toISOString().slice(0, 10)}.json`, payload, "application/json");
 }
 
-/** Parse a previously exported backup file. Resolves with the AppState. */
-export function importJSON(file: File): Promise<AppState> {
+/** Parse a previously exported backup file. Resolves with the raw state (the store normalizes it). */
+export function importJSON(file: File): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Could not read file."));
@@ -62,10 +62,9 @@ export function importJSON(file: File): Promise<AppState> {
       try {
         const parsed = JSON.parse(String(reader.result));
         const state = parsed?.state ?? parsed;
-        if (!state || typeof state !== "object" || !("sources" in state)) {
-          throw new Error("This does not look like a Mnemo Med backup.");
-        }
-        resolve(state as AppState);
+        const ok = state && typeof state === "object" && ("courses" in state || "sources" in state || "profile" in state);
+        if (!ok) throw new Error("This does not look like a Mnemo Med backup.");
+        resolve(state);
       } catch (e) {
         reject(e instanceof Error ? e : new Error("Invalid backup file."));
       }

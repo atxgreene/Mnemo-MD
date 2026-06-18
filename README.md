@@ -214,12 +214,14 @@ is fully useful by generating elite prompts you paste into any model.
   uploaded figure to a vision-capable model and streams the analysis in-app
   (still prompt-only when no AI is connected).
 
-**v3**
-- Full Mnemosyne backend
-- Multi-course memory
-- Collaborative study groups
-- Adaptive exams
-- Mobile app packaging
+**v3 (in progress)**
+- ✅ Multi-course memory — keep many courses on one device, each with its own
+  profile, sources, weak topics, flashcards, and outputs; switch from the
+  sidebar. (Old single-course data migrates automatically.)
+- ⏳ Adaptive exams
+- ⏳ Mobile app packaging (Tauri/Capacitor)
+- ⏳ Full Mnemosyne backend · multi-device sync · collaborative study groups
+  (require a backend)
 
 ---
 
