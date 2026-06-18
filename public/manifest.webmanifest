@@ -1,5 +1,5 @@
 {
-  "name": "Mnemo Med",
+  "name": "Mnemo Med — Source-Locked Study Cockpit",
   "short_name": "Mnemo Med",
   "description": "Source-locked study intelligence for premed finals.",
   "start_url": ".",
@@ -8,12 +8,11 @@
   "orientation": "portrait-primary",
   "background_color": "#06121f",
   "theme_color": "#06121f",
+  "categories": ["education", "productivity", "medical"],
   "icons": [
-    {
-      "src": "icon.svg",
-      "type": "image/svg+xml",
-      "sizes": "any",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" },
+    { "src": "icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" }
   ]
 }

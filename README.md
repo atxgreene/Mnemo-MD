@@ -2,6 +2,15 @@
 
 **Source-locked study intelligence for premed finals.**
 
+### ▶ [Open the live app → atxgreene.github.io/Mnemo-MD](https://atxgreene.github.io/Mnemo-MD/)
+
+[![Live demo](https://img.shields.io/badge/Live-Demo-5ad1c2?style=for-the-badge)](https://atxgreene.github.io/Mnemo-MD/)
+[![Deploy to GitHub Pages](https://github.com/atxgreene/Mnemo-MD/actions/workflows/deploy.yml/badge.svg)](https://github.com/atxgreene/Mnemo-MD/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+Works on desktop and mobile, installs as an app, and runs offline. No account, no
+API key — your notes stay on your device.
+
 Mnemo MD is a local-first, source-locked study cockpit for premed students. It
 transforms notes, slides, graphs, and professor wording into review sheets,
 Anki cards, practice questions, and finals cram plans — without inventing
