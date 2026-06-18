@@ -5,6 +5,7 @@ import { exportJSON, importJSON } from "../lib/exporters";
 import { Panel, SectionTitle, Field, Toggle } from "../ui";
 import Disclaimer from "../components/Disclaimer";
 import InstallButton from "../components/InstallButton";
+import ConnectionsPanel from "../components/ConnectionsPanel";
 
 const MODELS: ModelTarget[] = ["Claude", "ChatGPT", "Gemini", "Local LLM"];
 
@@ -67,6 +68,8 @@ export default function Settings() {
           </Field>
         </div>
       </Panel>
+
+      <ConnectionsPanel />
 
       <Panel>
         <h3 className="mb-1 font-semibold">Install app</h3>

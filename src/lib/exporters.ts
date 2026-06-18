@@ -37,7 +37,19 @@ export function exportCSV(name: string, rows: string[][]): void {
 }
 
 export function exportJSON(state: AppState): void {
-  const payload = JSON.stringify({ app: "mnemo-med", version: 1, exportedAt: Date.now(), state }, null, 2);
+  // Never write AI keys/tokens into a backup file.
+  const safe: AppState = {
+    ...state,
+    ai: {
+      ...state.ai,
+      claudeKey: "",
+      openaiKey: "",
+      geminiKey: "",
+      geminiAccessToken: undefined,
+      geminiTokenExpiry: undefined,
+    },
+  };
+  const payload = JSON.stringify({ app: "mnemo-med", version: 1, exportedAt: Date.now(), state: safe }, null, 2);
   download(`mnemo-med-backup-${new Date().toISOString().slice(0, 10)}.json`, payload, "application/json");
 }
 

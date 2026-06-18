@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useStore } from "./store";
+import { completeGeminiOAuthIfPresent } from "./lib/ai/oauth";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Guide from "./pages/Guide";
@@ -17,7 +19,28 @@ import OutputVault from "./pages/OutputVault";
 import Settings from "./pages/Settings";
 
 export default function App() {
-  const { page } = useStore();
+  const { page, setAI, setPage } = useStore();
+
+  // Complete a Gemini OAuth redirect, if the app was loaded with an auth code.
+  useEffect(() => {
+    completeGeminiOAuthIfPresent()
+      .then((res) => {
+        if (res) {
+          setAI({
+            enabled: true,
+            provider: "gemini",
+            geminiAuthMode: "oauth",
+            geminiAccessToken: res.accessToken,
+            geminiTokenExpiry: res.expiresAt,
+          });
+          setPage("settings");
+        }
+      })
+      .catch(() => {
+        /* surfaced in the Connections panel on next attempt */
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex min-h-screen">

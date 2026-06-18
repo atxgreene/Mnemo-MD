@@ -13,6 +13,7 @@
     "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.2",
     "jszip": "^3.10.1",
     "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type {
+  AISettings,
   AppState,
   Flashcard,
   MnemoSettings,
@@ -32,6 +33,7 @@ function normalize(loaded: AppState | null): AppState {
     weakTopics: loaded.weakTopics ?? [],
     outputs: loaded.outputs ?? [],
     flashcards: loaded.flashcards ?? [],
+    ai: { ...base.ai, ...(loaded.ai ?? {}) },
   };
 }
 
@@ -43,6 +45,7 @@ interface StoreContextValue {
   setProfile: (patch: Partial<StudyProfile>) => void;
   setModes: (patch: Partial<ModeToggles>) => void;
   setSettings: (patch: Partial<MnemoSettings>) => void;
+  setAI: (patch: Partial<AISettings>) => void;
 
   addSource: (s: SourceMaterial) => void;
   updateSource: (id: string, patch: Partial<SourceMaterial>) => void;
@@ -95,6 +98,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setProfile: (patch) => setState((s) => ({ ...s, profile: { ...s.profile, ...patch } })),
       setModes: (patch) => setState((s) => ({ ...s, modes: { ...s.modes, ...patch } })),
       setSettings: (patch) => setState((s) => ({ ...s, settings: { ...s.settings, ...patch } })),
+      setAI: (patch) => setState((s) => ({ ...s, ai: { ...s.ai, ...patch } })),
 
       addSource: (src) => setState((s) => ({ ...s, sources: [src, ...s.sources] })),
       updateSource: (id, patch) =>
