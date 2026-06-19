@@ -36,7 +36,7 @@ export default function Sidebar() {
     <>
       {/* Mobile top bar */}
       <div
-        className="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-ink-950/86 px-4 pb-3 backdrop-blur-xl lg:hidden"
+        className="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-ink-950/[0.86] px-4 pb-3 backdrop-blur-xl lg:hidden"
         style={{ paddingTop: "max(0.75rem, env(safe-area-inset-top))" }}
       >
         <BrandMark size="sm" showText />
@@ -56,7 +56,7 @@ export default function Sidebar() {
       )}
 
       {/* Desktop sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-72 flex-none flex-col border-r border-white/10 bg-ink-950/54 p-4 backdrop-blur-2xl lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-72 flex-none flex-col border-r border-white/10 bg-ink-950/[0.54] p-4 backdrop-blur-2xl lg:flex">
         <div className="px-2 pb-5 pt-1">
           <BrandMark showText />
         </div>
