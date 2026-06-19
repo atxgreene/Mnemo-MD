@@ -47,7 +47,7 @@ export default function App() {
     <div className="min-h-screen lg:flex">
       <Sidebar />
       <main className="min-w-0 flex-1">
-        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:py-8">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:py-8 xl:px-8">
           {page === "dashboard" && <Dashboard />}
           {page === "guide" && <Guide />}
           {page === "profile" && <Profile />}
