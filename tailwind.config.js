@@ -6,9 +6,15 @@ export default {
     extend: {
       colors: {
         ink: {
-          950: "#060b16",
-          900: "#0a1120",
-          800: "#0f1830",
+          950: "#050814",
+          900: "#081120",
+          800: "#0e1a32",
+        },
+        mnemo: {
+          teal: "#5eead4",
+          cyan: "#67e8f9",
+          violet: "#a78bfa",
+          gold: "#f4d675",
         },
       },
       fontFamily: {
@@ -32,6 +38,7 @@ export default {
       },
       boxShadow: {
         glow: "0 8px 40px rgba(45, 212, 191, 0.18)",
+        brand: "0 24px 90px rgba(20, 184, 166, 0.2), 0 10px 36px rgba(99, 102, 241, 0.12)",
       },
       keyframes: {
         "fade-in": {
