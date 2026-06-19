@@ -1,4 +1,6 @@
-# Mnemo MD
+# Mnemo Med
+
+![Mnemo Med wordmark](public/brand-wordmark.svg)
 
 **Source-locked study intelligence for medical school.**
 
@@ -11,7 +13,7 @@
 Works on desktop and mobile, installs as an app, and runs offline. No account, no
 API key — your notes stay on your device.
 
-Mnemo MD is a local-first, source-locked study cockpit for medical students. It
+Mnemo Med is a local-first, source-locked study cockpit for medical students. It
 transforms lecture notes, slides, graphs, and professor wording into review
 sheets, Anki cards, practice questions, and cram plans — without inventing
 unsupported answers.
@@ -41,6 +43,24 @@ repeatable study system:
   generate it.
 - **No backend, no API key, no account.** Everything is stored locally in your
   browser. It still works fully offline as an installable PWA.
+
+---
+
+## Pages / brand system
+
+The GitHub Pages experience includes a polished landing hero, reusable app mark,
+refreshed social preview, and documented brand tokens.
+
+| Asset | Location |
+| --- | --- |
+| Brand guide | [`docs/BRAND.md`](docs/BRAND.md) |
+| SVG app icon | [`public/icon.svg`](public/icon.svg) |
+| Wordmark | [`public/brand-wordmark.svg`](public/brand-wordmark.svg) |
+| Social preview | [`public/social-preview.svg`](public/social-preview.svg) |
+| React brand mark | [`src/components/BrandMark.tsx`](src/components/BrandMark.tsx) |
+| Pages hero | [`src/components/PagesHero.tsx`](src/components/PagesHero.tsx) |
+
+![Mnemo Med social preview](public/social-preview.svg)
 
 ---
 
@@ -98,13 +118,6 @@ repeatable study system:
   export, delete.
 - **Export / Import** — `.txt`, `.md`, `.csv`, and a full JSON backup you can
   re-import on any device.
-
----
-
-## Screenshots
-
-> _Screenshots placeholder — add captures of the Dashboard, Prompt Lab, and
-> Mnemosyne Lite evidence panel here._
 
 ---
 
