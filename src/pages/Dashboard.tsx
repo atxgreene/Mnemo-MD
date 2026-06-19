@@ -5,6 +5,7 @@ import { recommendedOrder, studyConfidenceScore, band } from "../lib/weakness";
 import { deckStats } from "../lib/srs";
 import { PROMPT_MODE_LABELS } from "../types";
 import { Panel, SectionTitle, Stat } from "../ui";
+import PagesHero from "../components/PagesHero";
 import ModeBar from "../components/ModeBar";
 import StatusBadges from "../components/StatusBadges";
 import Disclaimer from "../components/Disclaimer";
@@ -29,9 +30,11 @@ export default function Dashboard() {
   })();
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
+      <PagesHero />
+
       <SectionTitle
-        icon="🩺"
+        icon="◌"
         title="Study Cockpit"
         subtitle={profile.courseName ? `${profile.courseName} · ${profile.examName}` : "Set up your course profile to begin."}
         right={<StatusBadges />}
@@ -39,7 +42,7 @@ export default function Dashboard() {
 
       <QuickStart />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
         <Stat label="Days to exam" value={days === null ? "—" : days < 0 ? "past" : days} accent />
         <Stat label="Source notes" value={sources.length} />
         <Stat label="Cards due" value={cardsDue} accent />
@@ -49,7 +52,7 @@ export default function Dashboard() {
 
       <div className="grid gap-5 lg:grid-cols-3">
         <Panel className="lg:col-span-2">
-          <SectionTitle icon="🎯" title="Recommended Next Action" />
+          <SectionTitle icon="◎" title="Recommended Next Action" />
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-slate-200">{nextAction.label}</p>
             <button className="btn btn-primary" onClick={() => setPage(nextAction.page)}>
@@ -82,7 +85,7 @@ export default function Dashboard() {
         </Panel>
 
         <Panel>
-          <SectionTitle icon="📅" title="Exam" />
+          <SectionTitle icon="◷" title="Exam" />
           <dl className="space-y-2 text-sm">
             <Row k="Course" v={profile.courseName || "—"} />
             <Row k="Professor" v={profile.professor || "—"} />
@@ -100,7 +103,7 @@ export default function Dashboard() {
 
       <Panel>
         <SectionTitle
-          icon="🗄️"
+          icon="▥"
           title="Recent Outputs"
           right={
             <button className="btn btn-ghost btn-sm" onClick={() => setPage("vault")}>
@@ -167,7 +170,7 @@ function QuickStart() {
     <div className="glass rounded-2xl p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="font-semibold">👋 New here? Here's the 5-step study loop</h3>
+          <h3 className="font-semibold">New here? Start with the 5-step study loop</h3>
           <p className="mt-0.5 text-sm text-slate-400">
             A sample course is loaded so you can explore. Tap a step to jump in, or read the full guide.
           </p>
@@ -184,7 +187,7 @@ function QuickStart() {
         ))}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        <button className="btn btn-primary btn-sm" onClick={() => setPage("guide")}>📖 Read the Guide</button>
+        <button className="btn btn-primary btn-sm" onClick={() => setPage("guide")}>Read the Guide</button>
         <button className="btn btn-ghost btn-sm" onClick={close}>Got it</button>
       </div>
     </div>
