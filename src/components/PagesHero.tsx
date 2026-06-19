@@ -72,7 +72,7 @@ export default function PagesHero() {
 
 function EvidenceRow({ score, title, text }: { score: string; title: string; text: string }) {
   return (
-    <div className="grid grid-cols-[3.25rem_1fr] gap-3 rounded-2xl border border-white/8 bg-white/[0.035] p-3">
+    <div className="grid grid-cols-[3.25rem_1fr] gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.035] p-3">
       <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-teal-300/20 to-violet-400/20 text-sm font-bold text-teal-100">
         {score}
       </div>
