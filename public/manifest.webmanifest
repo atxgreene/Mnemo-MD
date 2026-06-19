@@ -1,13 +1,13 @@
 {
-  "name": "Mnemo Med — Source-Locked Study Cockpit",
+  "name": "Mnemo Med — Source-Locked Study Intelligence",
   "short_name": "Mnemo Med",
-  "description": "Source-locked study intelligence for medical school.",
+  "description": "A local-first medical study OS for verified review sheets, Anki cards, practice exams, and cram plans from your own source material.",
   "start_url": ".",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#06121f",
-  "theme_color": "#06121f",
+  "background_color": "#050814",
+  "theme_color": "#050814",
   "categories": ["education", "productivity", "medical"],
   "icons": [
     { "src": "icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
