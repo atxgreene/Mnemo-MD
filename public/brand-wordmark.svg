@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-labelledby="title desc">
+  <title id="title">Mnemo Med wordmark</title>
+  <desc id="desc">Mnemo Med source-locked study wordmark.</desc>
+  <defs>
+    <linearGradient id="mark" x1="20" y1="20" x2="190" y2="190" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#67e8f9"/>
+      <stop offset="0.52" stop-color="#5eead4"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="920" height="220" rx="44" fill="#050814"/>
+  <rect x="28" y="28" width="164" height="164" rx="42" fill="url(#mark)" opacity="0.15"/>
+  <path d="M68 148V72c0-6 8-9 12-4l31 34 31-34c4-5 12-2 12 4v76" fill="none" stroke="url(#mark)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M82 148h58M111 104v44" fill="none" stroke="url(#mark)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <text x="230" y="105" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif" font-size="58" font-weight="760" letter-spacing="-2">Mnemo Med</text>
+  <text x="233" y="147" fill="#5eead4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif" font-size="18" font-weight="700" letter-spacing="5">SOURCE-LOCKED STUDY INTELLIGENCE</text>
+</svg>
