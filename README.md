@@ -13,6 +13,23 @@
 Works on desktop and mobile, installs as an app, and runs offline. No account, no
 API key — your notes stay on your device.
 
+### ⬇ Download Mnemo Med
+
+The fastest way in is the **[live app](https://atxgreene.github.io/Mnemo-MD/)** — it
+runs in any browser and installs to your home screen or desktop in one tap. Prefer a
+native desktop app? Grab an installer from the
+**[latest release](https://github.com/atxgreene/Mnemo-MD/releases/latest)**:
+
+| Platform | Download | First launch |
+| --- | --- | --- |
+| **macOS** (Apple Silicon + Intel) | `Mnemo Med_universal.dmg` | Right-click the app → **Open** → **Open** (one time) |
+| **Windows** | `Mnemo Med_x64-setup.exe` | On the SmartScreen prompt: **More info → Run anyway** |
+| **Linux** | `.AppImage` (portable) or `.deb` | AppImage: `chmod +x` then run |
+
+The desktop apps are unsigned, so your OS shows a one-time warning on first launch —
+that's expected. Everything is local-first: your notes, cards, and any API keys never
+leave your machine.
+
 Mnemo Med is a local-first, source-locked study cockpit for medical students. It
 transforms lecture notes, slides, graphs, and professor wording into review
 sheets, Anki cards, practice questions, and cram plans — without inventing
